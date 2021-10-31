@@ -1,6 +1,15 @@
 package com.appnext;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.fragment.NavHostFragment;
@@ -11,11 +20,49 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.appnext.databinding.ActivityItemDetailBinding;
 
-public class ItemDetailHostActivity extends AppCompatActivity {
+import org.litepal.LitePal;
 
+import java.util.List;
+
+public class ItemDetailHostActivity extends AppCompatActivity{
+
+    private static final String TAG = "ItemDetailHostActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+//        open permission windows
+        if (isNoOption() == true) {
+            if (isNoSwitch() == false) {
+                Intent intent = new Intent(
+                        Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                startActivity(intent);
+            }
+        }
+//        open service to collect data
+        Intent openIntent = new Intent(this, TimeCollectInfoService.class);
+        startService(openIntent);
+        stopService(openIntent);
+//          test
+
+
+
+        List<AppUsageInfoByAppName> appUsageInfoByAppNames = LitePal.findAll(AppUsageInfoByAppName.class);
+
+
+
+
+        Log.d(TAG, "appUsageInfoByAppNames size:"+appUsageInfoByAppNames.size());
+        for (int i = 0;i < appUsageInfoByAppNames.size();++i) {
+            AppUsageInfoByAppName appUsageInfoByAppName = appUsageInfoByAppNames.get(i);
+            Log.d(TAG, "appname:"+appUsageInfoByAppName.getAppName()+
+                    " usedtime:"+appUsageInfoByAppName.getAllUsedTime());
+        }
+
+
+
 
         ActivityItemDetailBinding binding = ActivityItemDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -34,5 +81,27 @@ public class ItemDetailHostActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_item_detail);
         return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
+    //判断当前设备中是否有"有权查看使用情况的应用程序"这个选项
+    private boolean isNoOption() {
+        PackageManager packageManager = getApplicationContext()
+                .getPackageManager();
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
+    private boolean isNoSwitch() {
+        long ts = System.currentTimeMillis();
+        UsageStatsManager usageStatsManager = (UsageStatsManager) getApplicationContext()
+                .getSystemService("usagestats");
+        List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(
+                UsageStatsManager.INTERVAL_BEST, 0, ts);
+        if (queryUsageStats == null || queryUsageStats.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

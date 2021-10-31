@@ -3,6 +3,7 @@ package com.appnext;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.ContentInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -42,6 +44,8 @@ import com.anychart.enums.ScaleTypes;
 import com.anychart.enums.TooltipDisplayMode;
 import com.anychart.scales.Linear;
 
+import org.litepal.LitePal;
+
 import java.util.ArrayList;
 
 /**
@@ -53,7 +57,7 @@ import java.util.ArrayList;
  * item details side-by-side using two vertical panes.
  */
 public class ItemListFragment extends Fragment implements View.OnClickListener {
-
+    private static final String TAG = "ItemListFragment";
     /**
      * Method to intercept global key events in the
      * item list fragment to trigger keyboard shortcuts
