@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_detail_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ItemDetailHostActivity"
+    tools:ignore="MergeRootFrame">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="APP Usage Time"
+            android:textSize="15dp"
+            />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="4h 20m"
+            android:textSize="50dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <com.anychart.AnyChartView
+            android:id="@+id/column_View"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:stretchColumns="1">
+
+            <TableRow>
+                <TextView
+                    android:text="Daily average"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:gravity="left"/>
+                <TextView
+                    android:text="33 min"
+                    android:padding="5dp"
+                    android:gravity="right"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:text="Notification"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:gravity="left"/>
+                <TextView
+                    android:text="17 times"
+                    android:padding="5dp"
+                    android:gravity="right"/>
+            </TableRow>
+
+        </TableLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/item_detail_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/shape_main_list_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="APP Information"
+                    android:textSize="15dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@color/black"
+                        app:srcCompat="@drawable/ic_launcher_foreground"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="APP"
+                        android:textSize="25dp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView
+                            android:text="Category "
+                            android:textColor="@color/black"
+                            android:padding="5dp"
+                            android:gravity="left"/>
+                        <TextView
+                            android:text="Social"
+                            android:padding="5dp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:text="Developer "
+                            android:textColor="@color/black"
+                            android:padding="5dp"
+                            android:gravity="left"/>
+                        <TextView
+                            android:text="Google"
+                            android:padding="5dp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/shape_main_list_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Next APP"
+                    android:textSize="15dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_main_list_bg"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@color/black"
+                        app:srcCompat="@drawable/ic_launcher_foreground"
+                        />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@color/black"
+                        app:srcCompat="@drawable/ic_launcher_foreground"
+                        />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@color/black"
+                        app:srcCompat="@drawable/ic_launcher_foreground"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/shape_main_list_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Usage Detail"
+                    android:textSize="15dp"/>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView
+                            android:text="10:00 - 10:08 "
+                            android:textColor="@color/black"
+                            android:padding="5dp"
+                            android:gravity="left"/>
+                        <TextView
+                            android:text="8 min"
+                            android:textColor="@color/black"
+                            android:padding="5dp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/item_detail"-->
+<!--                style="?android:attr/textAppearanceLarge"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:textIsSelectable="true"-->
+<!--                tools:context="com.appnext.ItemDetailFragment" />-->
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
