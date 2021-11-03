@@ -27,8 +27,8 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="com.nextapp.widget.refresh.CLICK"/>
-                <action android:name="com.nextapp.widget.refresh.DONE"/>
                 <action android:name="com.nextapp.widget.app1.CLICK" />
+                <action android:name="com.nextapp.widget.app2.CLICK" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
@@ -40,6 +40,7 @@
             <intent-filter>
                 <action android:name="com.nextapp.widget.refresh.CLICK"/>
                 <action android:name="com.nextapp.widget.app1.CLICK" />
+                <action android:name="com.nextapp.widget.app2.CLICK" />
             </intent-filter>
         </receiver>
 

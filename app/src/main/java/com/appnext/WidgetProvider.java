@@ -14,10 +14,9 @@ import java.util.Map;
 public class WidgetProvider extends AppWidgetProvider {
 
     private static final String REFRESH_BUTTON_CLICK = "com.nextapp.widget.refresh.CLICK";
-    private static final String REFRESH_DONE = "com.nextapp.widget.refresh.DONE";
     private static final String APP1_BUTTON_CLICK = "com.nextapp.widget.app1.CLICK";
+    private static final String APP2_BUTTON_CLICK = "com.nextapp.widget.app2.CLICK";
 
-    private Bundle pkgInfo;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -29,13 +28,16 @@ public class WidgetProvider extends AppWidgetProvider {
             refreshIntent.setClass(context, WidgetService.WidgetReceiver.class);
             refreshIntent.setAction(REFRESH_BUTTON_CLICK);
             context.sendBroadcast(refreshIntent);
-        } else if (action.equals(REFRESH_DONE)) {
-            pkgInfo = intent.getExtras();
         } else if (action.equals(APP1_BUTTON_CLICK)) {
-            Intent click1Intent = new Intent();
-            click1Intent.setClass(context, WidgetService.WidgetReceiver.class);
-            click1Intent.setAction(APP1_BUTTON_CLICK);
-            context.sendBroadcast(click1Intent);
+            Intent clickInt = new Intent();
+            clickInt.setClass(context, WidgetService.WidgetReceiver.class);
+            clickInt.setAction(APP1_BUTTON_CLICK);
+            context.sendBroadcast(clickInt);
+        } else if (action.equals(APP2_BUTTON_CLICK)) {
+            Intent clickInt = new Intent();
+            clickInt.setClass(context, WidgetService.WidgetReceiver.class);
+            clickInt.setAction(APP2_BUTTON_CLICK);
+            context.sendBroadcast(clickInt);
         }
 
     }
