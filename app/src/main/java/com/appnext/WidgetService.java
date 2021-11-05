@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -128,7 +129,7 @@ public class WidgetService extends Service {
             }
         }
 
-        public int getIndexOfLargest(float[] array )
+        public static int getIndexOfLargest(float[] array )
         {
             if ( array == null || array.length == 0 ) return -1; // null or empty
 
@@ -189,20 +190,30 @@ public class WidgetService extends Service {
             return appInfo.loadIcon(pm);
         }
 
-        public static Bitmap drawableToBitmap(Drawable drawable) {
-            int w = drawable.getIntrinsicWidth();
-            int h = drawable.getIntrinsicHeight();
-            Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
-            Bitmap bitmap = Bitmap.createBitmap(w, h, config);
+        public static Bitmap drawableToBitmap (Drawable drawable) {
+            Bitmap bitmap = null;
+
+            if (drawable instanceof BitmapDrawable) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                if(bitmapDrawable.getBitmap() != null) {
+                    return bitmapDrawable.getBitmap();
+                }
+            }
+
+            if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+            } else {
+                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            }
+
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawColor(Color.WHITE);
-            drawable.setBounds(0, 0, w, h);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
             return bitmap;
         }
 
 
-        public void refresh(Context context) {
+        public static void refresh(Context context) {
 
             pkgInfo = new Bundle();
 
@@ -213,7 +224,7 @@ public class WidgetService extends Service {
             // Prediction:
             int app1_id = clf.predict(curTime);
 
-            pkgInfo.putString("pkgName1", "com.android.vending");
+            pkgInfo.putString("pkgName1", "com.android.contacts");
             pkgInfo.putString("className1", "com.android.vending.AssetBrowserActivity");
 
             int app2_id;
@@ -245,27 +256,18 @@ public class WidgetService extends Service {
                 app2_id = 0;
             }
 
-            pkgInfo.putString("pkgName2", "com.android.contacts");
+            pkgInfo.putString("pkgName2", "com.android.settings");
             pkgInfo.putString("className2", "com.android.contacts.activities.PeopleActivity");
 
             RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.app_widget);
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             PackageManager pm = context.getPackageManager();
 
-            // update widget
-            //                ApplicationInfo appInfo1 = pm.getApplicationInfo(pkgInfo.getString("pkgName1"), PackageManager.GET_META_DATA);
-//                Resources resources1 = pm.getResourcesForApplication(appInfo1);
-//                int appIconResId1 = appInfo1.icon;
-//                Bitmap appIconBitMap1 = BitmapFactory.decodeResource(resources1, appIconResId1);
             Drawable appIconDrawable1 = getIconFromPackageName(pkgInfo.getString("pkgName1"), context);
             Bitmap appIconBitMap1 = drawableToBitmap(appIconDrawable1);
             remoteView.setImageViewBitmap(R.id.app1_icon, appIconBitMap1);
             remoteView.setTextViewText(R.id.app1_name, String.format("APP%d", app1_id));
 
-//                ApplicationInfo appInfo2 = pm.getApplicationInfo(pkgInfo.getString("pkgName2"), PackageManager.GET_META_DATA);
-//                Resources resources2 = pm.getResourcesForApplication(appInfo2);
-//                int appIconResId2 = appInfo2.icon;
-//                Bitmap appIconBitMap2 = BitmapFactory.decodeResource(resources2, appIconResId2);
             Drawable appIconDrawable2 = getIconFromPackageName(pkgInfo.getString("pkgName2"), context);
             Bitmap appIconBitMap2 = drawableToBitmap(appIconDrawable2);
             remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);

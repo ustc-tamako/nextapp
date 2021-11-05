@@ -48,6 +48,11 @@ public class WidgetProvider extends AppWidgetProvider {
 
         Intent intent = new Intent(context, WidgetService.class);
         context.startService(intent);
+
+        Intent refreshIntent = new Intent();
+        refreshIntent.setClass(context, WidgetService.WidgetReceiver.class);
+        refreshIntent.setAction(REFRESH_BUTTON_CLICK);
+        context.sendBroadcast(refreshIntent);
     }
 
     @Override

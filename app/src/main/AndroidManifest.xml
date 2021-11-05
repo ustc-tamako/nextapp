@@ -34,6 +34,33 @@
             android:name=".TimeCollectInfoService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <receiver android:name=".WidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.nextapp.widget.refresh.CLICK"/>
+                <action android:name="com.nextapp.widget.app1.CLICK" />
+                <action android:name="com.nextapp.widget.app2.CLICK" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget"/>
+        </receiver>
+
+        <receiver android:name=".WidgetService$WidgetReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.nextapp.widget.refresh.CLICK"/>
+                <action android:name="com.nextapp.widget.app1.CLICK" />
+                <action android:name="com.nextapp.widget.app2.CLICK" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
