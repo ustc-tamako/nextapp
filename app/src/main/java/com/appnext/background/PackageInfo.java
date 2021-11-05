@@ -1,6 +1,5 @@
-package com.appnext;
+package com.appnext.background;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class PackageInfo {
     private String mEndTime;
     private List<Integer> mOpenTime; //保存每个时间段app使用时间,不要初始化，以秒为单位
     private ArrayList<OneTimeDetails> mTimeDetailsList; //保存该app启动的所有事件
+    private byte[] drawable; //保存app对应的图标
 
     public PackageInfo(int mUsedCount, long mUsedTime, String mPackageName,String appName,String mStartTime,String mEndTime,List<Integer> mOpenTime,ArrayList<OneTimeDetails> mTimeDetailsList) {
         this.mUsedCount = mUsedCount;
@@ -98,6 +98,14 @@ public class PackageInfo {
 
     public void setmTimeDetailsList(ArrayList<OneTimeDetails> mTimeDetailsList) {
         this.mTimeDetailsList = mTimeDetailsList;
+    }
+
+    public byte[] getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(byte[] drawable) {
+        this.drawable = drawable;
     }
 
     @Override

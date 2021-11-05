@@ -1,10 +1,11 @@
-package com.appnext;
+package com.appnext.background;
 
 import android.annotation.TargetApi;
 import android.app.usage.UsageEvents;
 import android.os.Build;
 
-import java.io.Serializable;
+import com.appnext.tooluntils.DateTransUtils;
+
 import java.util.ArrayList;
 
 /**

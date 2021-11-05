@@ -1,9 +1,11 @@
-package com.appnext;
+package com.appnext.background;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+
+import org.litepal.LitePal;
 
 //定时收集app使用消息
 public class TimeCollectInfoService extends Service {
@@ -31,6 +33,7 @@ public class TimeCollectInfoService extends Service {
 //        mUseTimeDataManager = (UseTimeDataManager) intent.getSerializableExtra("mUseTimeDataManager");
 //        boolean x = mUseTimeDataManager == null;
 //        Log.d(TAG, "onStartCommand: "+x);
+        LitePal.getDatabase();
         usageInfoTask = new UsageInfoTask();
         usageInfoTask.execute(TimeCollectInfoService.this);
         return super.onStartCommand(intent, flags, startId);

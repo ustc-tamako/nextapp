@@ -1,4 +1,4 @@
-package com.appnext;
+package com.appnext.database;
 
 import org.litepal.crud.LitePalSupport;
 
@@ -6,6 +6,7 @@ import org.litepal.crud.LitePalSupport;
 public class AppUsageInfo extends LitePalSupport {
 //mAppName表示app名称，mStartTime表示启动时间，mEndTime表示关闭时间，mTempAppRunningTime表示本次运行app时间，mAllAppRunningTime表示自从app开始运行之后的总运行时间（最后一个特征好像没啥用，删除吧）
     private String appName;
+    private String pkgName;
     private String startTime;
     private String endTime;
     private long usedTime;
@@ -16,6 +17,14 @@ public class AppUsageInfo extends LitePalSupport {
 
     public void setAppName(String appName) {
         this.appName = appName;
+    }
+
+    public String getPkgName() {
+        return pkgName;
+    }
+
+    public void setPkgName(String pkgName) {
+        this.pkgName = pkgName;
     }
 
     public String getStartTime() {
