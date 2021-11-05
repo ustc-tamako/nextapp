@@ -1,10 +1,9 @@
 //时间转换工具类
 
-package com.appnext;
+package com.appnext.tooluntils;
 
 import android.util.Log;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.Date;
  *
  */
 
-public class DateTransUtils implements Serializable {
+public class DateTransUtils {
 
     private static final SimpleDateFormat dateFormat  = new SimpleDateFormat("M-d-yyyy");
 
@@ -93,5 +92,17 @@ public class DateTransUtils implements Serializable {
         long time = System.currentTimeMillis() - dayNumber * DAY_IN_MILLIS;
         Log.i("Wingbu"," DateTransUtils-getDateString()  获取查询的日期 :" + dateFormat.format(time));
         return dateFormat.format(time);
+    }
+
+    public static String getHourMinute(String time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new SimpleDateFormat("HH:mm").format(date);
     }
 }

@@ -1,22 +1,22 @@
-package com.appnext;
+package com.appnext.background;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.appnext.database.AppUsageInfo;
+import com.appnext.database.AppUsageInfoByAppName;
+
 import org.litepal.LitePal;
-import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class UsageInfoTask extends AsyncTask<Context,java.lang.Void,java.lang.Void> {
+public class UsageInfoTask extends AsyncTask<Context, Void, Void> {
     UseTimeDataManager mUseTimeDataManager;
     private Context context;
     ArrayList<AppUsageInfo> mAppUsageInfoList;
@@ -49,11 +49,12 @@ public class UsageInfoTask extends AsyncTask<Context,java.lang.Void,java.lang.Vo
         for (int i = 0;i < mAppUsageInfoList.size();++i) {
             AppUsageInfo appUsageInfo = mAppUsageInfoList.get(i);
             String appName = appUsageInfo.getAppName();
+            String pkgName = appUsageInfo.getPkgName();
             String startTime = appUsageInfo.getStartTime();
             String endTime = appUsageInfo.getEndTime();
             long usedTime = appUsageInfo.getUsedTime();
             LitePal.deleteAll(AppUsageInfo.class,"appName = ? and startTime = ? and endTime = ? and usedTime = ?",appName,startTime,endTime, String.valueOf(usedTime));
-            addDataToAppUsageInfo(appUsageInfo.getAppName(),appUsageInfo.getStartTime(),appUsageInfo.getEndTime(),appUsageInfo.getUsedTime());
+            addDataToAppUsageInfo(appName,pkgName,startTime,endTime,usedTime);
         }
         Log.d(TAG, "Step 1 over ");
 
@@ -63,23 +64,27 @@ public class UsageInfoTask extends AsyncTask<Context,java.lang.Void,java.lang.Vo
         mPackageInfoList = mUseTimeDataManager.getPackageInfoList();
         for (int i = 0;i < mPackageInfoList.size();++i) {
             PackageInfo packageInfo = mPackageInfoList.get(i);
-            String mAppName = packageInfo.getmAppName();
-            int mAllUsedTime = (int) packageInfo.getmUsedTime();
-            int mAllOpenTime = packageInfo.getmUsedCount();
-            List<Integer> mUsedByHour = packageInfo.getmOpenTime();
+            String appName = packageInfo.getmAppName();
+            String pkgName = packageInfo.getmPackageName();
+            int allUsedTime = (int) packageInfo.getmUsedTime();
+            int allOpenTime = packageInfo.getmUsedCount();
+            List<Integer> usedByHour = packageInfo.getmOpenTime();
+            byte[] icon = packageInfo.getDrawable();
             LitePal.deleteAll(AppUsageInfoByAppName.class,"appName = ?"
-                            ,mAppName);
-            if (mAllOpenTime != 0 || mAllOpenTime != 0) {
-                addDataToAppUsageInfoByAppName(mAppName,mAllUsedTime,mAllOpenTime,mUsedByHour);
+                            ,appName);
+            if (allOpenTime != 0 || allOpenTime != 0) {
+                addDataToAppUsageInfoByAppName(appName,pkgName,allUsedTime,allOpenTime,usedByHour,icon);
             }
         }
         return null;
+
     }
 
     //    AppUsageInfo表格添加数据
-    private void addDataToAppUsageInfo(String appName,String startTime,String endTime,long usedTime) {
+    private void addDataToAppUsageInfo(String appName,String pkgName,String startTime,String endTime,long usedTime) {
         AppUsageInfo appUsageInfo = new AppUsageInfo();
         appUsageInfo.setAppName(appName);
+        appUsageInfo.setPkgName(pkgName);
         appUsageInfo.setStartTime(startTime);
         appUsageInfo.setEndTime(endTime);
         appUsageInfo.setUsedTime(usedTime);
@@ -92,9 +97,10 @@ public class UsageInfoTask extends AsyncTask<Context,java.lang.Void,java.lang.Vo
     }
 
 //    AppUsageInfoByAppName表格添加数据
-    private void addDataToAppUsageInfoByAppName(String appName,int allUsedTime,int allOpenTime,List<Integer> usedTimeByHour) {
+    private void addDataToAppUsageInfoByAppName(String appName, String pkgName, int allUsedTime, int allOpenTime, List<Integer> usedTimeByHour, byte[] icon) {
         AppUsageInfoByAppName appUsageInfoByAppName = new AppUsageInfoByAppName();
         appUsageInfoByAppName.setAppName(appName);
+        appUsageInfoByAppName.setPkgName(pkgName);
         appUsageInfoByAppName.setAllUsedTime(allUsedTime);
         appUsageInfoByAppName.setAllOpenTime(allOpenTime);
 //        appUsageInfoByAppName.setmUsedTimeByHour(usedTimeByHour);
@@ -122,7 +128,12 @@ public class UsageInfoTask extends AsyncTask<Context,java.lang.Void,java.lang.Vo
         appUsageInfoByAppName.setUsedTimeByHour21(usedTimeByHour.get(21));
         appUsageInfoByAppName.setUsedTimeByHour22(usedTimeByHour.get(22));
         appUsageInfoByAppName.setUsedTimeByHour23(usedTimeByHour.get(23));
+        appUsageInfoByAppName.setName(new String(icon));
+        String str = "abcd";
+        byte[] tmp = str.getBytes();
+        appUsageInfoByAppName.setDrawable(icon);
         appUsageInfoByAppName.save();
+        Log.d("icon11", "icon:"+tmp);
 //        Log.d(TAG,
 //                "name:"+appUsageInfoByAppName.getmAppName()+
 //                        " all_used_time:"+appUsageInfoByAppName.getmAllUsedTime()+

@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -20,15 +22,21 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 
+import com.appnext.background.UseTimeDataManager;
+import com.appnext.database.AppUsageInfoByAppName;
 import com.appnext.ml.Model;
 import com.appnext.KNeighborsClassifier;
 
+import org.checkerframework.checker.units.qual.A;
+import org.litepal.LitePal;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class WidgetService extends Service {
@@ -185,20 +193,48 @@ public class WidgetService extends Service {
 
             // update widget
             try {
-                ApplicationInfo appInfo1 = pm.getApplicationInfo(pkgInfo.getString("pkgName1"), PackageManager.GET_META_DATA);
-                Resources resources1 = pm.getResourcesForApplication(appInfo1);
-                int appIconResId1 = appInfo1.icon;
-                Bitmap appIconBitMap1 = BitmapFactory.decodeResource(resources1, appIconResId1);
-                remoteView.setImageViewBitmap(R.id.app1_icon, appIconBitMap1);
+
+                List<AppUsageInfoByAppName> appUsageInfoByAppNames = LitePal.findAll(AppUsageInfoByAppName.class);
+                byte[] icon1 = appUsageInfoByAppNames.get(0).getName().getBytes();
+                byte[] icon2 = appUsageInfoByAppNames.get(1).getName().getBytes();
+                Bitmap appIconBitMap1 = BitmapFactory.decodeByteArray(icon1, 0, icon1.length);
+                Bitmap appIconBitMap2 = BitmapFactory.decodeByteArray(icon2, 0, icon2.length);
+
+
+                BitmapFactory.Options op = new BitmapFactory.Options();
+                op.inSampleSize = 1;
+                int size = 2;
+
+                ArrayList<Bitmap> bitmaps = new ArrayList<>();
+                for (int i = 0;i < size;++i) {
+                    Drawable icon = context.getPackageManager().getApplicationIcon(appUsageInfoByAppNames.get(i).getPkgName());
+                    Bitmap appIconBitMap = UseTimeDataManager.drawableToBitmap(icon,appUsageInfoByAppNames.get(i).getPkgName());
+                    bitmaps.add(appIconBitMap);
+                }
+                Log.d("123456789", "size:"+bitmaps.size());
+
+                for (int i = 0;i < size;++i) {
+                    Log.d("123456789", "bitmap: "+bitmaps.get(i));
+                }
+
+//                ApplicationInfo appInfo1 = pm.getApplicationInfo(pkgInfo.getString("pkgName1"), PackageManager.GET_META_DATA);
+//                Resources resources1 = pm.getResourcesForApplication(appInfo1);
+//                int appIconResId1 = appInfo1.icon;
+//                Bitmap appIconBitMap1 = BitmapFactory.decodeResource(resources1, appIconResId1);
+                remoteView.setImageViewBitmap(R.id.app1_icon, bitmaps.get(0));
                 remoteView.setTextViewText(R.id.app1_name, String.format("APP%d", app1_id));
 
-                ApplicationInfo appInfo2 = pm.getApplicationInfo(pkgInfo.getString("pkgName2"), PackageManager.GET_META_DATA);
-                Resources resources2 = pm.getResourcesForApplication(appInfo2);
-                int appIconResId2 = appInfo1.icon;
-                Bitmap appIconBitMap2 = BitmapFactory.decodeResource(resources2, appIconResId2);
-                remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);
-                remoteView.setTextViewText(R.id.app2_name, String.format("APP%d", app2_id));
+//                ApplicationInfo appInfo2 = pm.getApplicationInfo(pkgInfo.getString("pkgName2"), PackageManager.GET_META_DATA);
+//                Resources resources2 = pm.getResourcesForApplication(appInfo2);
+//                int appIconResId2 = appInfo1.icon;
+//                Bitmap appIconBitMap2 = BitmapFactory.decodeResource(resources2, appIconResId2);
+//                remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);
 
+//                Bitmap appIconBitMap1 = BitmapFactory.decodeResource(resources1, appIconResId1);
+//                Bitmap appIconBitMap2 = BitmapFactory.decodeResource(resources1, appIconResId1);
+//                remoteView.setImageViewBitmap();
+                remoteView.setImageViewBitmap(R.id.app2_icon,bitmaps.get(1));
+                remoteView.setTextViewText(R.id.app2_name, String.format("APP%d", app2_id));
                 manager.updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteView);
 
             } catch (PackageManager.NameNotFoundException e) {

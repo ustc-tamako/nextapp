@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/123/nextapp/app/src/main/res/layout/app_widget.xml" value="0.12047101449275362" />
         <entry key="..\:/nextapp/app/src/main/res/layout/activity_item_detail.xml" value="0.22" />
         <entry key="..\:/nextapp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/nextapp/app/src/main/res/layout/fragment_item_detail.xml" value="0.10326086956521739" />
@@ -20,7 +21,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

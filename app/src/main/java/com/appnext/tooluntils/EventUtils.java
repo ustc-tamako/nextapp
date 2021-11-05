@@ -1,6 +1,6 @@
 //获取系统数据类
 
-package com.appnext;
+package com.appnext.tooluntils;
 
 import android.annotation.TargetApi;
 import android.app.usage.UsageEvents;
@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;

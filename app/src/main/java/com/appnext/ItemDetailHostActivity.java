@@ -5,11 +5,13 @@ import android.app.usage.UsageStatsManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,7 +20,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.appnext.background.TimeCollectInfoService;
+import com.appnext.database.AppUsageInfo;
+import com.appnext.database.AppUsageInfoByAppName;
 import com.appnext.databinding.ActivityItemDetailBinding;
+import com.appnext.tooluntils.DateTransUtils;
 
 import org.litepal.LitePal;
 
@@ -58,8 +64,22 @@ public class ItemDetailHostActivity extends AppCompatActivity{
         for (int i = 0;i < appUsageInfoByAppNames.size();++i) {
             AppUsageInfoByAppName appUsageInfoByAppName = appUsageInfoByAppNames.get(i);
             Log.d(TAG, "appname:"+appUsageInfoByAppName.getAppName()+
-                    " usedtime:"+appUsageInfoByAppName.getAllUsedTime());
+                    " pkgname:"+appUsageInfoByAppName.getPkgName()+
+                    " usedtime:"+appUsageInfoByAppName.getAllUsedTime()+
+                    " name"+appUsageInfoByAppName.getName());
+            if (appUsageInfoByAppName.getName() != null) {
+                byte[] icon = appUsageInfoByAppName.getName().getBytes();
+                Log.d(TAG, "icon:"+icon);
+                Bitmap bmpout = BitmapFactory.decodeByteArray(icon, 0, icon.length);
+                Drawable bd= new BitmapDrawable(getResources(), bmpout);
+                Log.d(TAG, "Drawable:"+bd);
+            }
         }
+
+//        AppUsageInfo appUsageInfo = LitePal.findFirst(AppUsageInfo.class);
+//        Log.d(TAG, "TimeHourMinute:"+
+//                DateTransUtils.getHourMinute(appUsageInfo.getStartTime())+
+//                ""+DateTransUtils.getHourMinute(appUsageInfo.getEndTime()));
 
 
 

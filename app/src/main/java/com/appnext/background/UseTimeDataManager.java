@@ -1,4 +1,4 @@
-package com.appnext;
+package com.appnext.background;
 
 import static java.lang.Long.max;
 import static java.lang.Long.min;
@@ -9,26 +9,30 @@ import android.app.usage.UsageStats;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 
-
 import androidx.annotation.RequiresApi;
 
-import java.io.Serializable;
+import com.appnext.database.AppUsageInfo;
+import com.appnext.tooluntils.ApknameMap;
+import com.appnext.tooluntils.DateTransUtils;
+import com.appnext.tooluntils.EventUtils;
+
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 主要的数据操作的类
@@ -43,8 +47,6 @@ public class UseTimeDataManager {
     private Context mContext;
 
     private int mDayNum;
-    private long mStartTime;
-    private long mEndTime;
     private HashMap<String,PackageInfo> pkgNameToPackageInfo = new HashMap<>();
     private ArrayList<Integer> mZeroArrayList = new ArrayList<>();
     private long ZeroLong = 0;
@@ -108,6 +110,17 @@ public class UseTimeDataManager {
         mEventListChecked = getEventListChecked();
         refreshOneTimeDetailList(0);
         refreshPackageInfoList();
+        ApknameMap.createMap(mPackageInfoList);
+//        test
+//        Set<Map.Entry<String, Integer>> entries = ApknameMap.ApknameToNumber.entrySet();
+//        for (Map.Entry<String, Integer> entry : entries) {
+//            Log.d("ApknameToNumber", entry.getKey()+"==="+entry.getValue());
+//        }
+//
+//        Set<Map.Entry<Integer, String>> entries1 = ApknameMap.NumberToApkname.entrySet();
+//        for (Map.Entry<Integer, String> entry : entries1) {
+//            Log.d("NumberToApkname", entry.getKey()+"==="+entry.getValue());
+//        }
         refreshAppUsageInfoList();
 //        sendEventBus();
         return 0;
@@ -136,10 +149,13 @@ public class UseTimeDataManager {
                 mPackageInfoList.add(info);
             }
         }
+//        Log.d(TAG, "mPackageInfoList.size:"+mPackageInfoList.size());
         for (int i = 0;i < mPackageInfoList.size();++i) {
             PackageInfo packageInfo = mPackageInfoList.get(i);
             packageInfo.setmOpenTime(calculateUseTimeByHour(packageInfo.getmPackageName()));
             packageInfo.setmUsedTime(calculateUseTimeToday(packageInfo.getmPackageName()));
+            packageInfo.setDrawable(getDrawableIconByPackageName(mContext,packageInfo.getmPackageName()));
+
         }
 //        pkgNameToPackageInfo.get("com.example.appinfocollect").setmOpenTime(calculateUseTimeByHour(pkgNameToPackageInfo.get("com.example.appinfocollect").getmPackageName()));
         long startTime = DateTransUtils.getTodayStartStamp(0,0,0);
@@ -177,8 +193,9 @@ public class UseTimeDataManager {
                 appUsageInfo.setStartTime(oneTimeDetails.getStartTime());
                 appUsageInfo.setEndTime(oneTimeDetails.getStopTime());
                 appUsageInfo.setUsedTime(oneTimeDetails.getUseTime()/1000);
+                appUsageInfo.setPkgName(oneTimeDetails.getPkgName());
                 mAppUsageInfoList.add(appUsageInfo);
-            }catch (java.lang.NullPointerException e){
+            }catch (NullPointerException e){
             }
         }
         return;
@@ -312,8 +329,8 @@ public class UseTimeDataManager {
         return t;
     }
 
+//    通过包名获取应用名和图标
     public  String getApplicationNameByPackageName(Context context, String packageName) {
-
         PackageManager pm = context.getPackageManager();
         String Name;
         try {
@@ -322,7 +339,48 @@ public class UseTimeDataManager {
             Name = "";
         }
         return Name;
+    }
 
+
+    public byte[] getDrawableIconByPackageName(Context context,String packageName) {
+        Drawable icon = getAppIcon(context,packageName);
+        Bitmap bitmap = drawableToBitmap(icon,packageName);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+        return data;
+    }
+
+    public  Drawable getAppIcon(Context context, String packageName) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            ApplicationInfo info = pm.getApplicationInfo(packageName, 0);
+            return info.loadIcon(pm);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable,String pkgName) {
+        if (drawable == null) {
+            return null;
+        }
+        Bitmap bitmap = Bitmap
+                .createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                                : Bitmap.Config.RGB_565);
+        Log.i("Utilities",
+                "drawableToBitmap drawable.getIntrinsicWidth()=" + drawable.getIntrinsicWidth()
+                        + ",drawable.getIntrinsicHeight()="
+                        + drawable.getIntrinsicHeight()
+                        + " "+pkgName);
+//        drawable.draw(canvas);
+        return bitmap;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

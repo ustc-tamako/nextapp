@@ -1,12 +1,11 @@
-package com.appnext;
+package com.appnext.database;
 
 import org.litepal.crud.LitePalSupport;
-
-import java.util.List;
 
 //AppUsageInfoByAppName表格，记录每个app的使用信息
 public class AppUsageInfoByAppName extends LitePalSupport {
     private String appName;
+    private String pkgName;
     private int allUsedTime; //总使用时间
     private int allOpenTime; //总打开次数
 //    private List<Integer> mUsedTimeByHour;
@@ -34,6 +33,8 @@ public class AppUsageInfoByAppName extends LitePalSupport {
     private int usedTimeByHour21;
     private int usedTimeByHour22;
     private int usedTimeByHour23;
+    private byte[] drawable;
+    private String name;
 
     public String getAppName() {
         return appName;
@@ -41,6 +42,14 @@ public class AppUsageInfoByAppName extends LitePalSupport {
 
     public void setAppName(String appName) {
         this.appName = appName;
+    }
+
+    public String getPkgName() {
+        return pkgName;
+    }
+
+    public void setPkgName(String pkgName) {
+        this.pkgName = pkgName;
     }
 
     public int getAllUsedTime() {
@@ -249,5 +258,21 @@ public class AppUsageInfoByAppName extends LitePalSupport {
 
     public void setUsedTimeByHour23(int usedTimeByHour23) {
         this.usedTimeByHour23 = usedTimeByHour23;
+    }
+
+    public byte[] getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(byte[] drawable) {
+        this.drawable = drawable;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
