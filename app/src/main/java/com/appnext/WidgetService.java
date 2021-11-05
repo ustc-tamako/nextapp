@@ -9,12 +9,19 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -133,6 +140,68 @@ public class WidgetService extends Service {
             return largest; // position of the first largest found
         }
 
+        public static Drawable getIconFromPackageName(String packageName, Context context)
+        {
+            PackageManager pm = context.getPackageManager();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+            {
+                try
+                {
+                    PackageInfo pi = pm.getPackageInfo(packageName, 0);
+                    Context otherAppCtx = context.createPackageContext(packageName, Context.CONTEXT_IGNORE_SECURITY);
+
+                    int displayMetrics[] = {DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_HIGH, DisplayMetrics.DENSITY_TV};
+
+                    for (int displayMetric : displayMetrics)
+                    {
+                        try
+                        {
+                            Drawable d = otherAppCtx.getResources().getDrawableForDensity(pi.applicationInfo.icon, displayMetric);
+                            if (d != null)
+                            {
+                                return d;
+                            }
+                        }
+                        catch (Resources.NotFoundException e)
+                        {
+//                      Log.d(TAG, "NameNotFound for" + packageName + " @ density: " + displayMetric);
+                            continue;
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    // Handle Error here
+                }
+            }
+
+            ApplicationInfo appInfo = null;
+            try
+            {
+                appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            }
+            catch (PackageManager.NameNotFoundException e)
+            {
+                return null;
+            }
+
+            return appInfo.loadIcon(pm);
+        }
+
+        public static Bitmap drawableToBitmap(Drawable drawable) {
+            int w = drawable.getIntrinsicWidth();
+            int h = drawable.getIntrinsicHeight();
+            Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
+            Bitmap bitmap = Bitmap.createBitmap(w, h, config);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(Color.WHITE);
+            drawable.setBounds(0, 0, w, h);
+            drawable.draw(canvas);
+            return bitmap;
+        }
+
+
         public void refresh(Context context) {
 
             pkgInfo = new Bundle();
@@ -184,26 +253,26 @@ public class WidgetService extends Service {
             PackageManager pm = context.getPackageManager();
 
             // update widget
-            try {
-                ApplicationInfo appInfo1 = pm.getApplicationInfo(pkgInfo.getString("pkgName1"), PackageManager.GET_META_DATA);
-                Resources resources1 = pm.getResourcesForApplication(appInfo1);
-                int appIconResId1 = appInfo1.icon;
-                Bitmap appIconBitMap1 = BitmapFactory.decodeResource(resources1, appIconResId1);
-                remoteView.setImageViewBitmap(R.id.app1_icon, appIconBitMap1);
-                remoteView.setTextViewText(R.id.app1_name, String.format("APP%d", app1_id));
+            //                ApplicationInfo appInfo1 = pm.getApplicationInfo(pkgInfo.getString("pkgName1"), PackageManager.GET_META_DATA);
+//                Resources resources1 = pm.getResourcesForApplication(appInfo1);
+//                int appIconResId1 = appInfo1.icon;
+//                Bitmap appIconBitMap1 = BitmapFactory.decodeResource(resources1, appIconResId1);
+            Drawable appIconDrawable1 = getIconFromPackageName(pkgInfo.getString("pkgName1"), context);
+            Bitmap appIconBitMap1 = drawableToBitmap(appIconDrawable1);
+            remoteView.setImageViewBitmap(R.id.app1_icon, appIconBitMap1);
+            remoteView.setTextViewText(R.id.app1_name, String.format("APP%d", app1_id));
 
-                ApplicationInfo appInfo2 = pm.getApplicationInfo(pkgInfo.getString("pkgName2"), PackageManager.GET_META_DATA);
-                Resources resources2 = pm.getResourcesForApplication(appInfo2);
-                int appIconResId2 = appInfo1.icon;
-                Bitmap appIconBitMap2 = BitmapFactory.decodeResource(resources2, appIconResId2);
-                remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);
-                remoteView.setTextViewText(R.id.app2_name, String.format("APP%d", app2_id));
+//                ApplicationInfo appInfo2 = pm.getApplicationInfo(pkgInfo.getString("pkgName2"), PackageManager.GET_META_DATA);
+//                Resources resources2 = pm.getResourcesForApplication(appInfo2);
+//                int appIconResId2 = appInfo2.icon;
+//                Bitmap appIconBitMap2 = BitmapFactory.decodeResource(resources2, appIconResId2);
+            Drawable appIconDrawable2 = getIconFromPackageName(pkgInfo.getString("pkgName2"), context);
+            Bitmap appIconBitMap2 = drawableToBitmap(appIconDrawable2);
+            remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);
+            remoteView.setTextViewText(R.id.app2_name, String.format("APP%d", app2_id));
 
-                manager.updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteView);
+            manager.updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteView);
 
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
