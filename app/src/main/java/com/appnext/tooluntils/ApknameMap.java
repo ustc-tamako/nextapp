@@ -1,6 +1,7 @@
 package com.appnext.tooluntils;
 
 import com.appnext.background.PackageInfo;
+import com.appnext.database.AppInfo;
 import com.appnext.database.AppUsageInfoByAppName;
 
 import org.litepal.LitePal;
@@ -16,11 +17,11 @@ public class ApknameMap {
 
 
     public static void createMap() {
-        List<AppUsageInfoByAppName> appUsageInfoByAppNames = LitePal.findAll(AppUsageInfoByAppName.class);
-        for (int i = 0;i < appUsageInfoByAppNames.size();++i) {
-            AppUsageInfoByAppName appUsageInfoByAppName = appUsageInfoByAppNames.get(i);
-            ApknameToNumber.put(appUsageInfoByAppName.getPkgName(),i);
-            NumberToApkname.put(i,appUsageInfoByAppName.getPkgName());
+        List<AppInfo> appInfos = LitePal.findAll(AppInfo.class);
+        for (int i = 0;i < appInfos.size();++i) {
+            AppInfo appInfo = appInfos.get(i);
+            ApknameToNumber.put(appInfo.getPkgName(),appInfo.getNumber());
+            NumberToApkname.put(appInfo.getNumber(),appInfo.getPkgName());
         }
     }
 }

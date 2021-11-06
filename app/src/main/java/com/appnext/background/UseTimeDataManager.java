@@ -500,7 +500,7 @@ public class UseTimeDataManager {
 //        return result;
 //    }
     //判断app是否为系统qpp
-    public  boolean isSystemApp(Context context, String packageName) {
+    public static boolean isSystemApp(Context context, String packageName) {
         if (TextUtils.isEmpty(packageName)){
             return  false;
         }
