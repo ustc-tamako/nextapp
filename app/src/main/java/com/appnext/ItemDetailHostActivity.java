@@ -21,14 +21,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.appnext.background.TimeCollectInfoService;
-import com.appnext.database.AppInfo;
 import com.appnext.database.AppUsageInfo;
 import com.appnext.database.AppUsageInfoByAppName;
-import com.appnext.database.TimeSequence;
 import com.appnext.databinding.ActivityItemDetailBinding;
 import com.appnext.tooluntils.ApknameMap;
 import com.appnext.tooluntils.DateTransUtils;
-import com.appnext.tooluntils.GetAppInfo;
 import com.appnext.tooluntils.GetStartTime;
 
 import org.litepal.LitePal;
@@ -53,23 +50,10 @@ public class ItemDetailHostActivity extends AppCompatActivity{
             }
         }
 //        open service to collect data
-//        Intent openIntent = new Intent(this, TimeCollectInfoService.class);
-//        startService(openIntent);
-//        stopService(openIntent
-
-//          获取app使用序列对应的序号值
-//        AppInfo appInfo = LitePal.findFirst(AppInfo.class);
-//        boolean isNull = appInfo == null;
-//        if (isNull == true) {
-//            GetAppInfo.getAppInfoFromUsageInfo();
-//        }
-//        ApknameMap.createMap(); //创建双向map
-//        List<AppUsageInfo> appUsageInfos = LitePal.findAll(AppUsageInfo.class);
-//        for (int i = 0;i < appUsageInfos.size();++i) {
-//            TimeSequence timeSequence = new TimeSequence();
-//            timeSequence.setNumber(ApknameMap.ApknameToNumber.get(appUsageInfos.get(i).getPkgName()));
-//            timeSequence.save();
-//        }
+        Intent openIntent = new Intent(this, TimeCollectInfoService.class);
+        startService(openIntent);
+        stopService(openIntent);
+//          test
 
 
 
@@ -94,6 +78,17 @@ public class ItemDetailHostActivity extends AppCompatActivity{
             }
         }
 
+        Log.d("pkgtonumber", "pkgmap");
+        ApknameMap.createMap();
+        for (int i = 0;i < ApknameMap.NumberToApkname.size();++i) {
+            Log.d("pkgtonumber", ApknameMap.NumberToApkname.get(i)+" "+ApknameMap.ApknameToNumber.get(i));
+        }
+
+        Log.d("time", "getHourMinute");
+        GetStartTime.getStartTimeByString();
+        for (int i = 0;i < GetStartTime.StartTimeList.size();++i) {
+            Log.d("time", "time:"+GetStartTime.StartTimeList.get(i));
+        }
 
 
         ActivityItemDetailBinding binding = ActivityItemDetailBinding.inflate(getLayoutInflater());
