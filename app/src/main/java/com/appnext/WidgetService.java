@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 
 import com.appnext.ml.Model;
 import com.appnext.KNeighborsClassifier;
+import com.appnext.tooluntils.IconUtils;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -141,77 +142,6 @@ public class WidgetService extends Service {
             return largest; // position of the first largest found
         }
 
-        public static Drawable getIconFromPackageName(String packageName, Context context)
-        {
-            PackageManager pm = context.getPackageManager();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-            {
-                try
-                {
-                    PackageInfo pi = pm.getPackageInfo(packageName, 0);
-                    Context otherAppCtx = context.createPackageContext(packageName, Context.CONTEXT_IGNORE_SECURITY);
-
-                    int displayMetrics[] = {DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_HIGH, DisplayMetrics.DENSITY_TV};
-
-                    for (int displayMetric : displayMetrics)
-                    {
-                        try
-                        {
-                            Drawable d = otherAppCtx.getResources().getDrawableForDensity(pi.applicationInfo.icon, displayMetric);
-                            if (d != null)
-                            {
-                                return d;
-                            }
-                        }
-                        catch (Resources.NotFoundException e)
-                        {
-//                      Log.d(TAG, "NameNotFound for" + packageName + " @ density: " + displayMetric);
-                            continue;
-                        }
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    // Handle Error here
-                }
-            }
-
-            ApplicationInfo appInfo = null;
-            try
-            {
-                appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-            }
-            catch (PackageManager.NameNotFoundException e)
-            {
-                return null;
-            }
-
-            return appInfo.loadIcon(pm);
-        }
-
-        public static Bitmap drawableToBitmap (Drawable drawable) {
-            Bitmap bitmap = null;
-
-            if (drawable instanceof BitmapDrawable) {
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                if(bitmapDrawable.getBitmap() != null) {
-                    return bitmapDrawable.getBitmap();
-                }
-            }
-
-            if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-            } else {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        }
-
 
         public static void refresh(Context context) {
 
@@ -263,18 +193,17 @@ public class WidgetService extends Service {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             PackageManager pm = context.getPackageManager();
 
-            Drawable appIconDrawable1 = getIconFromPackageName(pkgInfo.getString("pkgName1"), context);
-            Bitmap appIconBitMap1 = drawableToBitmap(appIconDrawable1);
+            Drawable appIconDrawable1 = IconUtils.getIconFromPackageName("com.tencent.tim", context);
+            Bitmap appIconBitMap1 = IconUtils.drawableToBitmap(appIconDrawable1);
             remoteView.setImageViewBitmap(R.id.app1_icon, appIconBitMap1);
             remoteView.setTextViewText(R.id.app1_name, String.format("APP%d", app1_id));
 
-            Drawable appIconDrawable2 = getIconFromPackageName(pkgInfo.getString("pkgName2"), context);
-            Bitmap appIconBitMap2 = drawableToBitmap(appIconDrawable2);
+            Drawable appIconDrawable2 = IconUtils.getIconFromPackageName("com.tencent.mm", context);
+            Bitmap appIconBitMap2 = IconUtils.drawableToBitmap(appIconDrawable2);
             remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);
             remoteView.setTextViewText(R.id.app2_name, String.format("APP%d", app2_id));
 
             manager.updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteView);
-
         }
     }
 }

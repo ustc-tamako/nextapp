@@ -114,7 +114,7 @@ public class UseTimeDataManager {
         mEventListChecked = getEventListChecked();
         refreshOneTimeDetailList(0);
         refreshPackageInfoList();
-        ApknameMap.createMap(mPackageInfoList);
+        ApknameMap.createMap();
 //        test
 //        Set<Map.Entry<String, Integer>> entries = ApknameMap.ApknameToNumber.entrySet();
 //        for (Map.Entry<String, Integer> entry : entries) {
@@ -348,7 +348,7 @@ public class UseTimeDataManager {
 
     public byte[] getDrawableIconByPackageName(Context context,String packageName) {
         Drawable icon = IconUtils.getAppIcon(context,packageName);
-        Bitmap bitmap = IconUtils.drawableToBitmap(icon,packageName);
+        Bitmap bitmap = IconUtils.drawableToBitmap(icon);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);

@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".TimeCollectInfoService"
+            android:name=".background.TimeCollectInfoService"
             android:enabled="true"
             android:exported="true"></service>
 

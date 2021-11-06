@@ -24,7 +24,9 @@ import com.appnext.background.TimeCollectInfoService;
 import com.appnext.database.AppUsageInfo;
 import com.appnext.database.AppUsageInfoByAppName;
 import com.appnext.databinding.ActivityItemDetailBinding;
+import com.appnext.tooluntils.ApknameMap;
 import com.appnext.tooluntils.DateTransUtils;
+import com.appnext.tooluntils.GetStartTime;
 
 import org.litepal.LitePal;
 
@@ -76,11 +78,17 @@ public class ItemDetailHostActivity extends AppCompatActivity{
             }
         }
 
-//        AppUsageInfo appUsageInfo = LitePal.findFirst(AppUsageInfo.class);
-//        Log.d(TAG, "TimeHourMinute:"+
-//                DateTransUtils.getHourMinute(appUsageInfo.getStartTime())+
-//                ""+DateTransUtils.getHourMinute(appUsageInfo.getEndTime()));
+        Log.d("time", "getHourMinute");
+        GetStartTime.getStartTimeByString();
+        for (int i = 0;i < GetStartTime.StartTimeList.size();++i) {
+            Log.d("time", "time:"+GetStartTime.StartTimeList.get(i));
+        }
 
+        Log.d("pkgtonumber", "pkgmap");
+        ApknameMap.createMap();
+        for (int i = 0;i < ApknameMap.NumberToApkname.size();++i) {
+            Log.d("pkgtonumber", ApknameMap.NumberToApkname.get(i)+" "+ApknameMap.ApknameToNumber.get(i));
+        }
 
 
 
