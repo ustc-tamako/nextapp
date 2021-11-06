@@ -30,8 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".TimeCollectInfoService"
+            android:enabled="true"
+            android:exported="true"></service>
 
-      <receiver android:name=".WidgetProvider"
+        <receiver android:name=".WidgetProvider"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -57,11 +61,6 @@
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false"/>
 
-        <service
-            android:name=".background.TimeCollectInfoService"
-            android:enabled="true"
-            android:exported="true"></service>
-
-  </application>
+    </application>
 
 </manifest>

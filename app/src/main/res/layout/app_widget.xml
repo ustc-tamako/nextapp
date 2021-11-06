@@ -4,49 +4,53 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@drawable/widget_bg">
+    android:background="@drawable/widget_bg" >
 
     <Button
         android:id="@+id/refresh_button"
-        android:layout_width="180dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="6dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="Refresh    NextAPP"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:background = "@drawable/button_bg"
+        android:text="NextAPP"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_height="140dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp">
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <ImageButton
                 android:id="@+id/app1_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:id="@+id/app1_name"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@+id/app1_icon"
                 android:gravity="center"
-                android:text="APP1"
+                android:text="微信"
+                android:textSize="20dp"
                 android:textColor="@color/black" />
 
             <TextView
@@ -55,8 +59,10 @@
                 android:layout_height="20dp"
                 android:layout_below="@+id/app1_name"
                 android:layout_toRightOf="@+id/app1_icon"
-                android:text="often used at 17:00"
-                android:textSize="10dp"
+                android:layout_alignLeft="@+id/app1_name"
+                android:layout_alignParentBottom="true"
+                android:text="常在 17：00 打开"
+                android:textSize="14dp"
                 android:gravity="center"/>
 
 
@@ -64,21 +70,26 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp">
+            android:layout_height="55dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp">
 
             <ImageButton
                 android:id="@+id/app2_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:id="@+id/app2_name"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_toRightOf="@+id/app2_icon"
-                android:text="APP2"
+                android:layout_marginLeft="15dp"
+                android:text="哔哩哔哩"
+                android:textSize="20dp"
                 android:textColor="@color/black"
                 android:gravity="center" />
 
@@ -88,8 +99,10 @@
                 android:layout_height="20dp"
                 android:layout_below="@+id/app2_name"
                 android:layout_toRightOf="@+id/app2_icon"
-                android:text="often used after app1"
-                android:textSize="10dp"
+                android:layout_alignLeft="@id/app2_name"
+                android:layout_alignParentBottom="true"
+                android:text="常在使用 QQ 后打开"
+                android:textSize="14dp"
                 android:gravity="center"/>
 
 
