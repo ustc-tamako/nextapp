@@ -10,7 +10,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -23,6 +26,7 @@ import com.appnext.database.AppUsageInfo;
 import com.appnext.tooluntils.ApknameMap;
 import com.appnext.tooluntils.DateTransUtils;
 import com.appnext.tooluntils.EventUtils;
+import com.appnext.tooluntils.IconUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -343,8 +347,8 @@ public class UseTimeDataManager {
 
 
     public byte[] getDrawableIconByPackageName(Context context,String packageName) {
-        Drawable icon = getAppIcon(context,packageName);
-        Bitmap bitmap = drawableToBitmap(icon,packageName);
+        Drawable icon = IconUtils.getAppIcon(context,packageName);
+        Bitmap bitmap = IconUtils.drawableToBitmap(icon,packageName);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -352,36 +356,6 @@ public class UseTimeDataManager {
         return data;
     }
 
-    public  Drawable getAppIcon(Context context, String packageName) {
-        try {
-            PackageManager pm = context.getPackageManager();
-            ApplicationInfo info = pm.getApplicationInfo(packageName, 0);
-            return info.loadIcon(pm);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Bitmap drawableToBitmap(Drawable drawable,String pkgName) {
-        if (drawable == null) {
-            return null;
-        }
-        Bitmap bitmap = Bitmap
-                .createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                                : Bitmap.Config.RGB_565);
-        Log.i("Utilities",
-                "drawableToBitmap drawable.getIntrinsicWidth()=" + drawable.getIntrinsicWidth()
-                        + ",drawable.getIntrinsicHeight()="
-                        + drawable.getIntrinsicHeight()
-                        + " "+pkgName);
-//        drawable.draw(canvas);
-        return bitmap;
-    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ArrayList<UsageEvents.Event> getEventListCheckWithoutErrorData() {
