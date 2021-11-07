@@ -26,13 +26,18 @@ import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.appnext.background.TimeCollectInfoService;
+import com.appnext.database.AppUsageInfo;
+import com.appnext.database.TimeSequence;
 import com.appnext.ml.Model;
 import com.appnext.KNeighborsClassifier;
 import com.appnext.tooluntils.*;
 
+import org.litepal.LitePal;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
@@ -259,6 +264,17 @@ public class WidgetService extends Service {
 
         public static void refresh(Context context) {
 
+//            Intent openIntent = new Intent(context, TimeCollectInfoService.class);
+//            context.startService(openIntent);
+//            context.stopService(openIntent);
+
+            UpdateDatabase updateDatabase = new UpdateDatabase(context);
+            updateDatabase.update();
+
+            Log.d("数据库", "读取完成");
+
+            GetStartTime.getStartTimeByString();
+
             int len = GetStartTime.StartTimeList.size();
 
             appSeq = new float[10];
@@ -267,15 +283,24 @@ public class WidgetService extends Service {
             }
 
             if (timeSeq == null) {
-                timeSeq = new double[len][1];
+                int len_ = len;
                 for (int i = 0; i < len; ++i) {
-                    timeSeq[i][0] = Double.valueOf(GetStartTime.StartTimeList.get(i));
+                    if (GetStartTime.appIdList.get(i) == null) {
+                        len_ --;
+                    }
                 }
-                appSeqByte = new byte[len];
+                int idx = 0;
+                timeSeq = new double[len_][1];
+                appSeqByte = new byte[len_];
                 for (int i = 0; i < len; ++i) {
-                    appSeqByte[i] = GetStartTime.appIdList.get(i).byteValue();
+                    if (GetStartTime.appIdList.get(i) == null) {
+                        continue;
+                    }
+                    timeSeq[idx][0] = Double.valueOf(GetStartTime.StartTimeList.get(i));
+                    appSeqByte[idx] = GetStartTime.appIdList.get(i).byteValue();
+                    ++idx;
                 }
-                clf = new KNeighborsClassifier(10, 36, 2, timeSeq, appSeqByte);
+                clf = new KNeighborsClassifier(10, 42, 2, timeSeq, appSeqByte);
             }
 
             pkgInfo = new Bundle();
@@ -292,8 +317,6 @@ public class WidgetService extends Service {
             int app2_id;
             // predict app2
             try {
-
-                appSeq = new float[]{0, 1, 2, 1, 1, 2, 1, 0, 3, 2};
 
                 Model model = Model.newInstance(context);
 
@@ -321,6 +344,10 @@ public class WidgetService extends Service {
                 app2_id = 0;
             }
 
+            Log.d("app1", String.format("%d", app1_id));
+            Log.d("app2", String.format("%d", app2_id));
+
+
             pkgInfo.putString("pkgName2", ApknameMap.NumberToApkname.get(app2_id));
 
             RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.app_widget);
@@ -330,17 +357,18 @@ public class WidgetService extends Service {
             Drawable appIconDrawable1 = getIconFromPackageName(pkgInfo.getString("pkgName1"), context);
             Bitmap appIconBitMap1 = drawableToBitmap(appIconDrawable1);
             remoteView.setImageViewBitmap(R.id.app1_icon, appIconBitMap1);
-            remoteView.setTextViewText(R.id.app1_name, ApknameMap.NumberToApkname.get(app1_id));
+            remoteView.setTextViewText(R.id.app1_name, ApknameMap.PkgnameToAppname.get((ApknameMap.NumberToApkname.get(app1_id))));
             remoteView.setTextViewText(R.id.app1_desc, String.format("常在 %d:%d 打开", date.getHours(), date.getMinutes()));
 
             Drawable appIconDrawable2 = getIconFromPackageName(pkgInfo.getString("pkgName2"), context);
             Bitmap appIconBitMap2 = drawableToBitmap(appIconDrawable2);
             remoteView.setImageViewBitmap(R.id.app2_icon, appIconBitMap2);
-            remoteView.setTextViewText(R.id.app2_name, ApknameMap.NumberToApkname.get(app2_id));
+            remoteView.setTextViewText(R.id.app2_name, ApknameMap.PkgnameToAppname.get((ApknameMap.NumberToApkname.get(app2_id))));
             int lastAppId = GetStartTime.appIdList.get(len-1);
-            remoteView.setTextViewText(R.id.app2_desc, String.format("常在使用%s后打开", ApknameMap.NumberToApkname.get(lastAppId)));
+            remoteView.setTextViewText(R.id.app2_desc, String.format("常在使用%s后打开", ApknameMap.PkgnameToAppname.get((ApknameMap.NumberToApkname.get(lastAppId)))));
 
             manager.updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteView);
+            Log.d("Widget", "更新完成");
 
         }
     }

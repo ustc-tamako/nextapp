@@ -12,6 +12,8 @@ public class GetStartTime {
     public static List<Integer> StartTimeList = new LinkedList<>();
 
     public static final void getStartTimeByString() {
+        appIdList.clear();
+        StartTimeList.clear();
         List<AppUsageInfo> appUsageInfos = LitePal.findAll(AppUsageInfo.class);
         for (int i = 0;i < appUsageInfos.size();++i) {
             AppUsageInfo appUsageInfo = appUsageInfos.get(i);

@@ -27,14 +27,18 @@ import com.appnext.databinding.ActivityItemDetailBinding;
 import com.appnext.tooluntils.ApknameMap;
 import com.appnext.tooluntils.DateTransUtils;
 import com.appnext.tooluntils.GetStartTime;
+import com.appnext.tooluntils.GetAppInfo;
+import com.appnext.database.AppInfo;
 
 import org.litepal.LitePal;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class ItemDetailHostActivity extends AppCompatActivity{
 
     private static final String TAG = "ItemDetailHostActivity";
+    public static Semaphore semaphore = new Semaphore(0);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +54,18 @@ public class ItemDetailHostActivity extends AppCompatActivity{
             }
         }
 //        open service to collect data
+
         Intent openIntent = new Intent(this, TimeCollectInfoService.class);
         startService(openIntent);
         stopService(openIntent);
+
 //          test
 
-
+//        AppInfo appInfo = LitePal.findFirst(AppInfo.class);
+//        boolean isNull = appInfo == null;
+//        if (isNull == true) {
+//            GetAppInfo.getAppInfoFromUsageInfo();
+//        }
 
         List<AppUsageInfoByAppName> appUsageInfoByAppNames = LitePal.findAll(AppUsageInfoByAppName.class);
 

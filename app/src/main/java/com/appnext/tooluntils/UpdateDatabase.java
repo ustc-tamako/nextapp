@@ -1,46 +1,32 @@
-package com.appnext.background;
+package com.appnext.tooluntils;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 
 import com.appnext.ItemDetailHostActivity;
+import com.appnext.background.PackageInfo;
+import com.appnext.background.UseTimeDataManager;
 import com.appnext.database.AppUsageInfo;
 import com.appnext.database.AppUsageInfoByAppName;
-import com.appnext.tooluntils.DatabaseUtils;
 
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsageInfoTask extends AsyncTask<Context, Void, Void> {
+public class UpdateDatabase {
+    private static final String TAG = "UpdateDatabase";
     UseTimeDataManager mUseTimeDataManager;
     private Context context;
     ArrayList<AppUsageInfo> mAppUsageInfoList;
     ArrayList<PackageInfo> mPackageInfoList;
-    private static final String TAG = "UsageInfoTask";
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+
+    public UpdateDatabase(Context context) {
+        this.context = context;
     }
 
-    @Override
-    protected void onPostExecute(Void unused) {
-        Log.d(TAG, "onPostExecute: 执行结束");
-        Toast.makeText(this.context,"执行结束",Toast.LENGTH_SHORT).show();
-        super.onPostExecute(unused);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    protected Void doInBackground(Context... contexts) {
+    public void update() {
         LitePal.getDatabase();
-        this.context = contexts[0];
         mUseTimeDataManager = UseTimeDataManager.getInstance(context);
         mUseTimeDataManager.refreshData(7);
         mAppUsageInfoList = mUseTimeDataManager.getAppUsageInfoList();
@@ -73,15 +59,10 @@ public class UsageInfoTask extends AsyncTask<Context, Void, Void> {
             List<Integer> usedByHour = packageInfo.getmOpenTime();
             byte[] icon = packageInfo.getDrawable();
             LitePal.deleteAll(AppUsageInfoByAppName.class,"appName = ?"
-                            ,appName);
+                    ,appName);
             if (allOpenTime != 0 || allOpenTime != 0) {
                 DatabaseUtils.addDataToAppUsageInfoByAppName(appName,pkgName,allUsedTime,allOpenTime,usedByHour,icon);
             }
         }
-        ItemDetailHostActivity.semaphore.release(1);
-        return null;
-
     }
-
-
 }

@@ -101,10 +101,10 @@ public class UseTimeDataManager {
         mStatsList = getUsageList(dayNumber);
 
         if (mEventList == null || mEventList.size() == 0) {
-            Log.i(TAG, " UseTimeDataManager-refreshData()   未查到events");
+//            Log.i(TAG, " UseTimeDataManager-refreshData()   未查到events");
 
             if (mStatsList == null || mStatsList.size() == 0) {
-                Log.i(TAG, " UseTimeDataManager-refreshData()   未查到stats");
+//                Log.i(TAG, " UseTimeDataManager-refreshData()   未查到stats");
                 return 2;
             }
             return 1;
@@ -189,8 +189,8 @@ public class UseTimeDataManager {
             }
             String pkgName = oneTimeDetails.getPkgName();
             PackageInfo info = pkgNameToPackageInfo.get(pkgName);
-            Log.d(TAG, "pkgName: "+pkgName);
-            Log.d(TAG, "info: "+info);
+//            Log.d(TAG, "pkgName: "+pkgName);
+//            Log.d(TAG, "info: "+info);
             try {
                 AppUsageInfo appUsageInfo = new AppUsageInfo();
                 appUsageInfo.setAppName(getApplicationNameByPackageName(mContext,pkgName));
@@ -207,7 +207,7 @@ public class UseTimeDataManager {
 
     //按照使用时间的长短进行排序，获取应用使用情况列表
     public ArrayList<PackageInfo> getmPackageInfoListOrderByTime() {
-        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByTime()   排序前：mPackageInfoList.size()" + mPackageInfoList.size());
+//        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByTime()   排序前：mPackageInfoList.size()" + mPackageInfoList.size());
 
         for (int n = 0; n < mPackageInfoList.size(); n++) {
             for (int m = n + 1; m < mPackageInfoList.size(); m++) {
@@ -219,13 +219,13 @@ public class UseTimeDataManager {
             }
         }
 
-        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByTime()   排序后：mPackageInfoList.size()" + mPackageInfoList.size());
+//        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByTime()   排序后：mPackageInfoList.size()" + mPackageInfoList.size());
         return mPackageInfoList;
     }
 
     //按照使用次数的多少进行排序，获取应用使用情况列表
     public ArrayList<PackageInfo> getmPackageInfoListOrderByCount() {
-        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByCount()   排序前：mPackageInfoList.size()" + mPackageInfoList.size());
+//        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByCount()   排序前：mPackageInfoList.size()" + mPackageInfoList.size());
 
         for (int n = 0; n < mPackageInfoList.size(); n++) {
             for (int m = n + 1; m < mPackageInfoList.size(); m++) {
@@ -237,7 +237,7 @@ public class UseTimeDataManager {
             }
         }
 
-        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByCount()   排序后：mPackageInfoList.size()" + mPackageInfoList.size());
+//        Log.i(TAG, " UseTimeDataManager-getmPackageInfoListOrderByCount()   排序后：mPackageInfoList.size()" + mPackageInfoList.size());
         return mPackageInfoList;
     }
 
@@ -283,7 +283,7 @@ public class UseTimeDataManager {
             lastTime = DateTransUtils.getZeroClockTimestamp(System.currentTimeMillis() - (dayNumber - 1) * DateTransUtils.DAY_IN_MILLIS) - 1;
 //            endTime = DateTransUtils.getZeroClockTimestamp(System.currentTimeMillis() - (dayNumber - 1) * DateTransUtils.DAY_IN_MILLIS) - 1;
             startTime = lastTime - DateTransUtils.DAY_IN_MILLIS + 1;
-            Log.d(TAG, "getEventList startTime:"+dateFormat.format(startTime)+" endTime"+dateFormat.format(endTime)+" lastTime:"+dateFormat.format(lastTime));
+//            Log.d(TAG, "getEventList startTime:"+dateFormat.format(startTime)+" endTime"+dateFormat.format(endTime)+" lastTime:"+dateFormat.format(lastTime));
         }
         return EventUtils.getEventList(mContext, startTime, endTime);
     }
@@ -304,7 +304,7 @@ public class UseTimeDataManager {
             lastTime = DateTransUtils.getZeroClockTimestamp(System.currentTimeMillis() - (dayNumber - 1) * DateTransUtils.DAY_IN_MILLIS) - 1;
 //            endTime = DateTransUtils.getZeroClockTimestamp(System.currentTimeMillis() - (dayNumber - 1) * DateTransUtils.DAY_IN_MILLIS) - 1;
             startTime = lastTime - DateTransUtils.DAY_IN_MILLIS + 1;
-            Log.d(TAG, "getUsageList startTime:"+dateFormat.format(startTime)+" endTime"+dateFormat.format(endTime)+" lastTime:"+dateFormat.format(lastTime));
+//            Log.d(TAG, "getUsageList startTime:"+dateFormat.format(startTime)+" endTime"+dateFormat.format(endTime)+" lastTime:"+dateFormat.format(lastTime));
         }
 
         return EventUtils.getUsageList(mContext, startTime, endTime);
@@ -372,10 +372,10 @@ public class UseTimeDataManager {
     //每次从0开始，将原本的 mOneTimeDetailList 清除一次,然后开始分类
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void refreshOneTimeDetailList(int startIndex) {
-        Log.i(TAG, "  refreshOneTimeDetailList()     startIndex : " + startIndex);
+//        Log.i(TAG, "  refreshOneTimeDetailList()     startIndex : " + startIndex);
 
         if (startIndex == 0) {
-            Log.i(TAG, "  refreshOneTimeDetailList()     每次从0开始，将原本的 mOneTimeDetailList 清除一次,然后开始分类 ");
+//            Log.i(TAG, "  refreshOneTimeDetailList()     每次从0开始，将原本的 mOneTimeDetailList 清除一次,然后开始分类 ");
             if (mOneTimeDetailList != null) {
                 mOneTimeDetailList.clear();
             }
@@ -388,7 +388,7 @@ public class UseTimeDataManager {
         for (int i = startIndex; i < mEventListChecked.size(); i++) {
             if (i == startIndex) {
                 if (mEventListChecked.get(i).getEventType() == 2) {
-                    Log.i(TAG, "  refreshOneTimeDetailList()     warning : 每次打开一个app  第一个activity的类型是 2     ");
+//                    Log.i(TAG, "  refreshOneTimeDetailList()     warning : 每次打开一个app  第一个activity的类型是 2     ");
                 }
                 pkg = mEventListChecked.get(i).getPackageName();
                 list.add(mEventListChecked.get(i));
@@ -407,12 +407,12 @@ public class UseTimeDataManager {
             }
         }
 
-        Log.i(TAG, "   mEventListChecked 分类:   before  check :   list.size() = " + list.size());
+//        Log.i(TAG, "   mEventListChecked 分类:   before  check :   list.size() = " + list.size());
         checkEventList(list);
-        Log.i(TAG, "   mEventListChecked 分类:   after  check :   list.size() = " + list.size());
+//        Log.i(TAG, "   mEventListChecked 分类:   after  check :   list.size() = " + list.size());
 //        startTime = list.get(0).getTimeStamp();
 //        endTime   = list.get( list.size() - 1 ).getTimeStamp();
-        Log.i(TAG, "   mEventListChecked 分类:  本次启动的包名：" + list.get(0).getPackageName() + "   时间：" + DateUtils.formatSameDayTime(list.get(0).getTimeStamp(), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM));
+//        Log.i(TAG, "   mEventListChecked 分类:  本次启动的包名：" + list.get(0).getPackageName() + "   时间：" + DateUtils.formatSameDayTime(list.get(0).getTimeStamp(), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM));
         for (int i = 1; i < list.size(); i += 2) {
             if (list.get(i).getEventType() == 2 && list.get(i - 1).getEventType() == 1) {
                 totalTime += (list.get(i).getTimeStamp() - list.get(i - 1).getTimeStamp());
@@ -424,7 +424,7 @@ public class UseTimeDataManager {
         if (usedIndex < mEventListChecked.size() - 1) {
             refreshOneTimeDetailList(usedIndex);
         } else {
-            Log.i(TAG, "  refreshOneTimeDetailList()     已经将  mEventListChecked 分类完毕   ");
+//            Log.i(TAG, "  refreshOneTimeDetailList()     已经将  mEventListChecked 分类完毕   ");
         }
 
     }
@@ -455,13 +455,13 @@ public class UseTimeDataManager {
         for (int i = 0; i < list.size() - 1; i += 2) {
             if (list.get(i).getClassName().equals(list.get(i + 1).getClassName())) {
                 if (list.get(i).getEventType() != 1) {
-                    Log.i(UseTimeDataManager.TAG, "   EventList 出错  ： " + list.get(i).getPackageName() + "  " + DateUtils.formatSameDayTime(list.get(i).getTimeStamp(), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM).toString());
+//                    Log.i(UseTimeDataManager.TAG, "   EventList 出错  ： " + list.get(i).getPackageName() + "  " + DateUtils.formatSameDayTime(list.get(i).getTimeStamp(), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM).toString());
                     list.remove(i);
                     isCheckAgain = true;
                     break;
                 }
                 if (list.get(i + 1).getEventType() != 2) {
-                    Log.i(UseTimeDataManager.TAG, "   EventList 出错 ： " + list.get(i + 1).getPackageName() + "  " + DateUtils.formatSameDayTime(list.get(i + 1).getTimeStamp(), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM).toString());
+//                    Log.i(UseTimeDataManager.TAG, "   EventList 出错 ： " + list.get(i + 1).getPackageName() + "  " + DateUtils.formatSameDayTime(list.get(i + 1).getTimeStamp(), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM).toString());
                     list.remove(i);
                     isCheckAgain = true;
                     break;
@@ -532,7 +532,7 @@ public class UseTimeDataManager {
                 useTime += mOneTimeDetailList.get(i).getUseTime();
             }
         }
-        Log.i(TAG, "  calculateUseTime : " + useTime);
+//        Log.i(TAG, "  calculateUseTime : " + useTime);
         return useTime;
     }
 //计算当天使用时间,该函数可以和calculateUseTimeByHour函数合并，加快运行速度
@@ -545,14 +545,14 @@ public class UseTimeDataManager {
         long useTime = 0;
         long startTime = DateTransUtils.getTodayStartStamp(0,0,0);
         long endTime = DateTransUtils.getTodayStartStamp(0,0,0)+DateTransUtils.DAY_IN_MILLIS;
-        if (flag)
-            Log.d("calculateUseTimeToday", "pkgName:"+pkg+" startTime:"+DateTransUtils.stampToDate(startTime)+" endTime:"+ DateTransUtils.stampToDate(endTime));
+//        if (flag)
+//            Log.d("calculateUseTimeToday", "pkgName:"+pkg+" startTime:"+DateTransUtils.stampToDate(startTime)+" endTime:"+ DateTransUtils.stampToDate(endTime));
         PackageInfo packageInfo = pkgNameToPackageInfo.get(pkg);
         ArrayList<OneTimeDetails> mTimeDetailsList = packageInfo.getmTimeDetailsList();
         for (int i = 0;i < mTimeDetailsList.size();++i) {
             OneTimeDetails oneTimeDetails = mTimeDetailsList.get(i);
-            if (flag)
-                    Log.d("calculateUseTimeToday", "start_time:"+oneTimeDetails.getStartTime()+" end_time:"+oneTimeDetails.getStopTime());
+//            if (flag)
+//                    Log.d("calculateUseTimeToday", "start_time:"+oneTimeDetails.getStartTime()+" end_time:"+oneTimeDetails.getStopTime());
             if (oneTimeDetails.getStartTime_long() >= endTime || oneTimeDetails.getStopTime_long() <= startTime) {
                 continue;
             }
@@ -560,10 +560,10 @@ public class UseTimeDataManager {
                 long interval = DateTransUtils.getTimeDiffBetweenDays(DateTransUtils.stampToDate(max(startTime,oneTimeDetails.getStartTime_long())), DateTransUtils.stampToDate(min(endTime,oneTimeDetails.getStopTime_long())));
 
                 useTime += interval;
-                if (flag) {
-                    Log.d("calculateUseTimeToday", "enter and interval is:"+interval);
-                    Log.d(TAG, "useTime:"+useTime);
-                }
+//                if (flag) {
+//                    Log.d("calculateUseTimeToday", "enter and interval is:"+interval);
+//                    Log.d(TAG, "useTime:"+useTime);
+//                }
             }
         }
         return useTime/1000;
@@ -579,14 +579,14 @@ public class UseTimeDataManager {
         List<Integer> UsedTimeByHour = new LinkedList<>();
         PackageInfo packageInfo = pkgNameToPackageInfo.get(pkg);
         ArrayList<OneTimeDetails> mTimeDetailsList = packageInfo.getmTimeDetailsList();
-        if (flag == true)
-            Log.d(TAG, "pkg: "+pkg);
+//        if (flag == true)
+//            Log.d(TAG, "pkg: "+pkg);
         for (int i = 0;i < 24;++i) {
             long allTime = 0;
             long startTime = DateTransUtils.getTodayStartStamp(i,0,0);
             long endTime = DateTransUtils.getTodayStartStamp(i+1,0,0);
-            if (flag)
-                Log.d("calculateUseTimeByHour", "pkgName:"+pkg+" startTime:"+DateTransUtils.stampToDate(startTime)+" endTime:"+ DateTransUtils.stampToDate(endTime));
+//            if (flag)
+//                Log.d("calculateUseTimeByHour", "pkgName:"+pkg+" startTime:"+DateTransUtils.stampToDate(startTime)+" endTime:"+ DateTransUtils.stampToDate(endTime));
             for (int j = 0; j < mTimeDetailsList.size(); ++j) {
                 OneTimeDetails oneTimeDetails = mTimeDetailsList.get(j);
 //                if (flag)
@@ -601,19 +601,19 @@ public class UseTimeDataManager {
                     }
                     else {
                         long interval = DateTransUtils.getTimeDiffBetweenDays(DateTransUtils.stampToDate(max(startTime,oneTimeDetails.getStartTime_long())), DateTransUtils.stampToDate(min(endTime,oneTimeDetails.getStopTime_long())));
-                        if (flag)
-                            Log.d("calculateUseTimeByHour", "enter and interval is:"+interval);
+//                        if (flag)
+//                            Log.d("calculateUseTimeByHour", "enter and interval is:"+interval);
                         allTime += interval;
                     }
                 }
             UsedTimeByHour.add((int) allTime/1000);
         }
-        if (flag)
-        Log.d("UsedTimeByHour", "size:"+UsedTimeByHour.size());
-        for (int i = 0;i < UsedTimeByHour.size();++i) {
-            if (flag)
-            Log.d("UsedTimeByHour", "i:"+i+" calculateUseTimeByHour: "+UsedTimeByHour.get(i));
-        }
+//        if (flag)
+//        Log.d("UsedTimeByHour", "size:"+UsedTimeByHour.size());
+//        for (int i = 0;i < UsedTimeByHour.size();++i) {
+//           f if (flag)
+//            Log.d("UsedTimeByHour", "i:"+i+" calculateUseTimeByHour: "+UsedTimeByHour.get(i));
+//        }
         return UsedTimeByHour;
     }
     // =======================================

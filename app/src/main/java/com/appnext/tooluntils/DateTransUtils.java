@@ -65,7 +65,7 @@ public class DateTransUtils {
         cal.set(Calendar.SECOND, second);
         long todayStamp = cal.getTimeInMillis();
 
-        Log.i("Wingbu"," DateTransUtils-getTodayStartStamp()  获取当日" + hour+ ":" + minute+ ":" + second+ "的时间戳 :" + todayStamp);
+//        Log.i("Wingbu"," DateTransUtils-getTodayStartStamp()  获取当日" + hour+ ":" + minute+ ":" + second+ "的时间戳 :" + todayStamp);
 
         return todayStamp;
     }
@@ -74,7 +74,7 @@ public class DateTransUtils {
     public static long getZeroClockTimestamp(long time){
         long currentStamp = time;
         currentStamp -= currentStamp % DAY_IN_MILLIS;
-        Log.i("Wingbu"," DateTransUtils-getZeroClockTimestamp()  获取当日00:00:00的时间戳,东八区则为早上八点 :" + currentStamp);
+//        Log.i("Wingbu"," DateTransUtils-getZeroClockTimestamp()  获取当日00:00:00的时间戳,东八区则为早上八点 :" + currentStamp);
         return currentStamp;
     }
 
@@ -90,7 +90,7 @@ public class DateTransUtils {
     //获取dayNumber天前，当天的日期字符串
     public static String getDateString(int dayNumber){
         long time = System.currentTimeMillis() - dayNumber * DAY_IN_MILLIS;
-        Log.i("Wingbu"," DateTransUtils-getDateString()  获取查询的日期 :" + dateFormat.format(time));
+//        Log.i("Wingbu"," DateTransUtils-getDateString()  获取查询的日期 :" + dateFormat.format(time));
         return dateFormat.format(time);
     }
 

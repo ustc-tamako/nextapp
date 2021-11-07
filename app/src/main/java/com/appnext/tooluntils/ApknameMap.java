@@ -11,9 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ApknameMap {
-//    ApknameToNumber是从包名到数字的映射，NumberToApkname是从数字到包名的映射
+    //    ApknameToNumber是从包名到数字的映射，NumberToApkname是从数字到包名的映射
     public static HashMap<String,Integer> ApknameToNumber = new HashMap<>();
     public static HashMap<Integer,String> NumberToApkname = new HashMap<>();
+    public static HashMap<String,String> PkgnameToAppname = new HashMap<>();
+    public static HashMap<String,String> AppnameToPkgname = new HashMap<>();
 
 
     public static void createMap() {
@@ -22,6 +24,8 @@ public class ApknameMap {
             AppInfo appInfo = appInfos.get(i);
             ApknameToNumber.put(appInfo.getPkgName(),appInfo.getNumber());
             NumberToApkname.put(appInfo.getNumber(),appInfo.getPkgName());
+            PkgnameToAppname.put(appInfo.getPkgName(),appInfo.getAppName());
+            AppnameToPkgname.put(appInfo.getAppName(),appInfo.getPkgName());
         }
     }
 }
