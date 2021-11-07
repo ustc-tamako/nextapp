@@ -23,9 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/icon_img"
-        android:layout_marginLeft="20dp"
 
         android:text="APP"
         android:textAppearance="?attr/textAppearanceListItem" />
@@ -57,7 +57,7 @@
         android:layout_toRightOf="@id/icon_img"
 
         app:progress_current="60"
-        app:progress_max="100"
+        app:progress_max="1440"
         app:progress_reached_bar_height="5dp"
         app:progress_reached_color="#696969"
         app:progress_text_visibility="invisible"

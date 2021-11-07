@@ -25,6 +25,7 @@
             />
         
         <TextView
+            android:id="@+id/apptime"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="20dp"
@@ -57,6 +58,7 @@
                     android:padding="5dp"
                     android:gravity="left"/>
                 <TextView
+                    android:id="@+id/Daverage"
                     android:text="33 min"
                     android:padding="5dp"
                     android:gravity="right"/>
@@ -69,6 +71,7 @@
                     android:padding="5dp"
                     android:gravity="left"/>
                 <TextView
+                    android:id="@+id/Notification"
                     android:text="17 times"
                     android:padding="5dp"
                     android:gravity="right"/>
@@ -123,6 +126,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/appname_view"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
@@ -168,60 +172,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:background="@drawable/shape_main_list_bg"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Next APP"
-                    android:textSize="15dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_main_list_bg"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/black"
-                        app:srcCompat="@drawable/ic_launcher_foreground"
-                        />
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/black"
-                        app:srcCompat="@drawable/ic_launcher_foreground"
-                        />
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/black"
-                        app:srcCompat="@drawable/ic_launcher_foreground"
-                        />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -239,21 +190,13 @@
 
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:stretchColumns="1">
-
-                    <TableRow>
-                        <TextView
-                            android:text="10:00 - 10:08 "
-                            android:textColor="@color/black"
-                            android:padding="5dp"
-                            android:gravity="left"/>
-                        <TextView
-                            android:text="8 min"
-                            android:textColor="@color/black"
-                            android:padding="5dp"
-                            android:gravity="right"/>
-                    </TableRow>
+                    <ListView
+                        android:id="@+id/country_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+                    </ListView>
 
                 </TableLayout>
 

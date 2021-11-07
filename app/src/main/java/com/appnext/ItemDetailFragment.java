@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -39,6 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.anychart.core.cartesian.series.RangeColumn;
 
+import org.litepal.LitePal;
+
 /**
  * A fragment representing a single Item detail screen.
  * This fragment is either contained in a {@link ItemListFragment}
@@ -59,7 +63,11 @@ public class ItemDetailFragment extends Fragment {
     private PlaceholderContent.PlaceholderItem mItem;
     private CollapsingToolbarLayout mToolbarLayout;
     private TextView mTextView;
-
+    private TextView mtimeView;
+    private ListView listView;
+    private TextView mavView;
+    private TextView mnotifiView;
+    public static final List<AppUsageInfo> appUsageInfo = LitePal.findAll(AppUsageInfo.class);
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
@@ -87,6 +95,7 @@ public class ItemDetailFragment extends Fragment {
             // to load content from a content provider.
             mItem = PlaceholderContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
+
     }
 
     @Override
@@ -95,12 +104,39 @@ public class ItemDetailFragment extends Fragment {
 
         binding = FragmentItemDetailBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
+        mnotifiView=binding.Notification;
+        mavView=binding.Daverage;
+        int count=0;
+        for (AppUsageInfo usageInfo : appUsageInfo) {
+            if (usageInfo.getAppName().equals(mItem.content)){
+                count++;
+            }
+        }
+        String[] useTimeByAppName=new String[count];
+        int index=0;
+        for (AppUsageInfo usageInfo : appUsageInfo) {
+            if(usageInfo.getAppName().equals(mItem.content)){
+                useTimeByAppName[index++]=usageInfo.getStartTime().substring(11,16)+
+                        " - "+usageInfo.getEndTime().substring(11,16)+"                                    "+usageInfo.getUsedTime()/60+"mins";
+
+            }
+        }
+        mnotifiView.setText(Integer.toString(count));
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.activity_listview, useTimeByAppName);
+
+        listView = binding.countryList;
+        listView.setAdapter(adapter);
+
 
 //        mToolbarLayout = rootView.findViewById(R.id.toolbar_layout);
-//        mTextView = binding.itemDetail;
+          mTextView = binding.appnameView;
+          mtimeView=binding.apptime;
+          mavView=binding.Daverage;
+
 
         // Show the placeholder content as text in a TextView & in the toolbar if available.
-//        updateContent();
+        updateContent();
 //        rootView.setOnDragListener(dragListener);
         return rootView;
     }
@@ -119,7 +155,7 @@ public class ItemDetailFragment extends Fragment {
 
         List<DataEntry> data = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            data.add(new ValueDataEntry(String.format("%dh", i),2*i));
+            data.add(new ValueDataEntry(String.format("%dh", i),mItem.usedTimeByHour[i]/60));
         }
 
         Column column = cartesian.column(data);
@@ -238,7 +274,21 @@ public class ItemDetailFragment extends Fragment {
 
     private void updateContent() {
         if (mItem != null) {
-            mTextView.setText(mItem.details);
+            mTextView.setText(mItem.content);
+            int time=Integer.parseInt(mItem.details.substring(0,mItem.details.length()-5));
+            if(time>60)
+            {
+                if(time%60==0)
+                {
+                    mtimeView.setText(time/60+"h");
+                }
+                mtimeView.setText(time/60+"h "+time%60+"m");
+            }
+            else
+            {
+                mtimeView.setText(time+"m");
+            }
+            mavView.setText(time/24+"m");
             if (mToolbarLayout != null) {
                 mToolbarLayout.setTitle(mItem.content);
             }
