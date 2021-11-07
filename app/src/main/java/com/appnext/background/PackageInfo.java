@@ -20,6 +20,7 @@ public class PackageInfo {
     private List<Integer> mOpenTime; //保存每个时间段app使用时间,不要初始化，以秒为单位
     private ArrayList<OneTimeDetails> mTimeDetailsList; //保存该app启动的所有事件
     private byte[] drawable; //保存app对应的图标
+    private int category;
 
     public PackageInfo(int mUsedCount, long mUsedTime, String mPackageName,String appName,String mStartTime,String mEndTime,List<Integer> mOpenTime,ArrayList<OneTimeDetails> mTimeDetailsList) {
         this.mUsedCount = mUsedCount;
@@ -106,6 +107,14 @@ public class PackageInfo {
 
     public void setDrawable(byte[] drawable) {
         this.drawable = drawable;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     @Override

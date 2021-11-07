@@ -35,6 +35,8 @@ public class AppUsageInfoByAppName extends LitePalSupport {
     private int usedTimeByHour23;
     private byte[] drawable;
     private String name;
+    private int category;
+    private String lastUsedTime;
 
     public String getAppName() {
         return appName;
@@ -274,5 +276,21 @@ public class AppUsageInfoByAppName extends LitePalSupport {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public String getLastUsedTime() {
+        return lastUsedTime;
+    }
+
+    public void setLastUsedTime(String lastUsedTime) {
+        this.lastUsedTime = lastUsedTime;
     }
 }

@@ -16,6 +16,16 @@ public class ApknameMap {
     public static HashMap<Integer,String> NumberToApkname = new HashMap<>();
     public static HashMap<String,String> PkgnameToAppname = new HashMap<>();
     public static HashMap<String,String> AppnameToPkgname = new HashMap<>();
+    public static String CategoryMap[] = {"CATEGORY_UNDEFINED",
+                                            "CATEGORY_GAME",
+                                            "CATEGORY_AUDIO",
+                                            "CATEGORY_VIDEO",
+                                            "CATEGORY_IMAGE",
+                                            "CATEGORY_SOCIAL",
+                                            "CATEGORY_NEWS",
+                                            "CATEGORY_MAPS",
+                                            "CATEGORY_PRODUCTIVITY",
+                                            "CATEGORY_ACCESSIBILITY"};
 
 
     public static void createMap() {
@@ -28,4 +38,5 @@ public class ApknameMap {
             AppnameToPkgname.put(appInfo.getAppName(),appInfo.getPkgName());
         }
     }
+
 }

@@ -132,7 +132,7 @@ public class UseTimeDataManager {
 
     //分类完成，初始化主界面所用到的数据
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void refreshPackageInfoList() {
+    public void refreshPackageInfoList(){
         mPackageInfoList.clear();
         pkgNameToPackageInfo.clear();
 
@@ -154,8 +154,16 @@ public class UseTimeDataManager {
             }
         }
 //        Log.d(TAG, "mPackageInfoList.size:"+mPackageInfoList.size());
+        PackageManager pm = mContext.getPackageManager();
         for (int i = 0;i < mPackageInfoList.size();++i) {
             PackageInfo packageInfo = mPackageInfoList.get(i);
+            ApplicationInfo applicationInfo = null;
+            try {
+                applicationInfo = pm.getApplicationInfo(packageInfo.getmPackageName(),0);
+                packageInfo.setCategory(applicationInfo.category);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             packageInfo.setmOpenTime(calculateUseTimeByHour(packageInfo.getmPackageName()));
             packageInfo.setmUsedTime(calculateUseTimeToday(packageInfo.getmPackageName()));
             packageInfo.setDrawable(getDrawableIconByPackageName(mContext,packageInfo.getmPackageName()));
@@ -194,9 +202,12 @@ public class UseTimeDataManager {
             try {
                 AppUsageInfo appUsageInfo = new AppUsageInfo();
                 appUsageInfo.setAppName(getApplicationNameByPackageName(mContext,pkgName));
+                String startTime = oneTimeDetails.getStartTime();
+                String endTime = oneTimeDetails.getStopTime();
+                long usedTime = DateTransUtils.getTimeDiffBetweenDays(startTime,endTime)/1000;
                 appUsageInfo.setStartTime(oneTimeDetails.getStartTime());
                 appUsageInfo.setEndTime(oneTimeDetails.getStopTime());
-                appUsageInfo.setUsedTime(oneTimeDetails.getUseTime()/1000);
+                appUsageInfo.setUsedTime(usedTime);
                 appUsageInfo.setPkgName(oneTimeDetails.getPkgName());
                 mAppUsageInfoList.add(appUsageInfo);
             }catch (NullPointerException e){
