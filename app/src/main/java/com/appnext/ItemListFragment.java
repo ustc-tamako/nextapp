@@ -1,5 +1,6 @@
 package com.appnext;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
@@ -20,11 +21,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anychart.chart.common.listener.Event;
 import com.anychart.chart.common.listener.ListenersInterface;
+import com.appnext.database.AppUsageInfoByAppName;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.android.material.button.MaterialButton;
 
@@ -54,6 +57,7 @@ import com.anychart.scales.Linear;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 /**
  * A fragment representing a list of Items. This fragment
@@ -94,6 +98,8 @@ public class ItemListFragment extends Fragment implements View.OnClickListener {
     private FragmentItemListBinding binding;
     private MaterialButton weekly_button;
     private MaterialButton daily_button;
+    private TextView dateText;
+    private TextView timeText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,6 +110,9 @@ public class ItemListFragment extends Fragment implements View.OnClickListener {
         daily_button = binding.dailyButton;
         daily_button.setOnClickListener(this);
         daily_button.setSelected(true);
+        dateText=binding.dateText;
+        timeText=binding.timeText;
+
         return binding.getRoot();
 
     }
@@ -261,17 +270,12 @@ public class ItemListFragment extends Fragment implements View.OnClickListener {
                 .xScale(ScaleTypes.ORDINAL);
 
         polar.title().margin().bottom(20d);
-        polar.setOnClickListener(new ListenersInterface.OnClickListener() {
-            @Override
-            public void onClick(Event event) {
-
-            }
-        });
         ((Linear) polar.yScale(Linear.class)).stackMode(ScaleStackMode.VALUE);
        polar.tooltip()
                 .displayMode(TooltipDisplayMode.SEPARATED);
 
         pieView.setChart(polar);
+
     }
 
     private void setupRecyclerView(
@@ -332,7 +336,7 @@ public class ItemListFragment extends Fragment implements View.OnClickListener {
             Collections.sort(items,new Comparator<PlaceholderContent.PlaceholderItem>() {
                 @Override
                 public int compare(PlaceholderContent.PlaceholderItem a, PlaceholderContent.PlaceholderItem b) {  //
-                    return Integer.parseInt(a.details.substring(0,a.details.length()-5)) - Integer.parseInt(b.details.substring(0,b.details.length()-5));
+                    return Integer.parseInt(b.details.substring(0,b.details.length()-5)) - Integer.parseInt(a.details.substring(0,a.details.length()-5));
                 }
             });
 
@@ -356,6 +360,7 @@ public class ItemListFragment extends Fragment implements View.OnClickListener {
 //            holder.mIdView.setText(mValues.get(position).id);
 //            holder.mContentView.setText(mValues.get(position).content);
             holder.itemView.setTag(mValues.get(position));
+            holder.imageView.setImageBitmap(WidgetService.WidgetReceiver.drawableToBitmap(WidgetService.WidgetReceiver.getIconFromPackageName(mValues.get(position).pkgname, holder.imageView.getContext())));
             holder.itemView.setOnClickListener(mOnClickListener);
             holder.mIdView.setText(mValues.get(position).content);
             holder.mContentView.setText(mValues.get(position).details);
@@ -401,11 +406,13 @@ public class ItemListFragment extends Fragment implements View.OnClickListener {
            final TextView mIdView;
            final TextView mContentView;
            final NumberProgressBar mBur;
+           final ImageView imageView;
             ViewHolder(ItemListContentBinding binding) {
                 super(binding.getRoot());
             mIdView = binding.appText;
             mContentView=binding.timeText;
             mBur=binding.timeBar;
+            imageView=binding.iconImg;
 //                mContentView = binding.content;
             }
 

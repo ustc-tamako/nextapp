@@ -14,8 +14,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
 
-        android:background="@color/black"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        android:background="@android:color/transparent" />
 
     <TextView
         android:id="@+id/app_text"
@@ -57,7 +57,7 @@
         android:layout_toRightOf="@id/icon_img"
 
         app:progress_current="60"
-        app:progress_max="1440"
+        app:progress_max="100"
         app:progress_reached_bar_height="5dp"
         app:progress_reached_color="#696969"
         app:progress_text_visibility="invisible"

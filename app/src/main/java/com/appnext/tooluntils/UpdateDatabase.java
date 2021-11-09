@@ -59,10 +59,11 @@ public class UpdateDatabase {
             List<Integer> usedByHour = packageInfo.getmOpenTime();
             byte[] icon = packageInfo.getDrawable();
             int category = packageInfo.getCategory();
+            String lastUsedTime = packageInfo.getmEndTime();
             LitePal.deleteAll(AppUsageInfoByAppName.class,"appName = ?"
                     ,appName);
             if (allOpenTime != 0 || allOpenTime != 0) {
-                DatabaseUtils.addDataToAppUsageInfoByAppName(appName,pkgName,allUsedTime,allOpenTime,usedByHour,icon,category);
+                DatabaseUtils.addDataToAppUsageInfoByAppName(appName,pkgName,allUsedTime,allOpenTime,usedByHour,icon,category,lastUsedTime);
             }
         }
     }

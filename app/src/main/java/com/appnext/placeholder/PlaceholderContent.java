@@ -2,7 +2,7 @@ package com.appnext.placeholder;
 
 import android.util.Log;
 
-import com.appnext.AppUsageInfoByAppName;
+import com.appnext.database.AppUsageInfoByAppName;
 
 import org.litepal.LitePal;
 
@@ -49,7 +49,7 @@ public class PlaceholderContent {
 
     private static PlaceholderItem createPlaceholderItem(int position) {
         AppUsageInfoByAppName appUsageInfoByAppName = appUsageInfoByAppNames.get(position);
-        return new PlaceholderItem(String.valueOf(position),appUsageInfoByAppName.getAppName(), Integer.toString(appUsageInfoByAppName.getAllUsedTime()/60)+" mins",appUsageInfoByAppName.getUsedTimeByHour0(),appUsageInfoByAppName.getUsedTimeByHour1(),appUsageInfoByAppName.getUsedTimeByHour2(),appUsageInfoByAppName.getUsedTimeByHour3(),appUsageInfoByAppName.getUsedTimeByHour4(),appUsageInfoByAppName.getUsedTimeByHour5(),appUsageInfoByAppName.getUsedTimeByHour6(),appUsageInfoByAppName.getUsedTimeByHour7(),appUsageInfoByAppName.getUsedTimeByHour8(),appUsageInfoByAppName.getUsedTimeByHour9(),appUsageInfoByAppName.getUsedTimeByHour10(),appUsageInfoByAppName.getUsedTimeByHour11(),appUsageInfoByAppName.getUsedTimeByHour12(),appUsageInfoByAppName.getUsedTimeByHour13(),appUsageInfoByAppName.getUsedTimeByHour14(),appUsageInfoByAppName.getUsedTimeByHour15(),appUsageInfoByAppName.getUsedTimeByHour16(),appUsageInfoByAppName.getUsedTimeByHour17(),appUsageInfoByAppName.getUsedTimeByHour18(),appUsageInfoByAppName.getUsedTimeByHour19(),appUsageInfoByAppName.getUsedTimeByHour20(),appUsageInfoByAppName.getUsedTimeByHour21(),appUsageInfoByAppName.getUsedTimeByHour22(),appUsageInfoByAppName.getUsedTimeByHour23());
+        return new PlaceholderItem(String.valueOf(position),appUsageInfoByAppName.getAppName(), Integer.toString(appUsageInfoByAppName.getAllUsedTime()/60)+" mins",appUsageInfoByAppName.getUsedTimeByHour0(),appUsageInfoByAppName.getUsedTimeByHour1(),appUsageInfoByAppName.getUsedTimeByHour2(),appUsageInfoByAppName.getUsedTimeByHour3(),appUsageInfoByAppName.getUsedTimeByHour4(),appUsageInfoByAppName.getUsedTimeByHour5(),appUsageInfoByAppName.getUsedTimeByHour6(),appUsageInfoByAppName.getUsedTimeByHour7(),appUsageInfoByAppName.getUsedTimeByHour8(),appUsageInfoByAppName.getUsedTimeByHour9(),appUsageInfoByAppName.getUsedTimeByHour10(),appUsageInfoByAppName.getUsedTimeByHour11(),appUsageInfoByAppName.getUsedTimeByHour12(),appUsageInfoByAppName.getUsedTimeByHour13(),appUsageInfoByAppName.getUsedTimeByHour14(),appUsageInfoByAppName.getUsedTimeByHour15(),appUsageInfoByAppName.getUsedTimeByHour16(),appUsageInfoByAppName.getUsedTimeByHour17(),appUsageInfoByAppName.getUsedTimeByHour18(),appUsageInfoByAppName.getUsedTimeByHour19(),appUsageInfoByAppName.getUsedTimeByHour20(),appUsageInfoByAppName.getUsedTimeByHour21(),appUsageInfoByAppName.getUsedTimeByHour22(),appUsageInfoByAppName.getUsedTimeByHour23(),appUsageInfoByAppName.getPkgName(),appUsageInfoByAppName.getCategory(),appUsageInfoByAppName.getLastUsedTime());
     }
 
     private static String makeDetails(int position) {
@@ -69,8 +69,11 @@ public class PlaceholderContent {
         public final String content;
         public final String details;
         public final int []usedTimeByHour;
+        public final String pkgname;
+        public final int category;
+        public final String lastused;
 
-        public PlaceholderItem(String id, String content, String details, int usedTimeByHour0, int usedTimeByHour1, int usedTimeByHour2, int usedTimeByHour3, int usedTimeByHour4, int usedTimeByHour5, int usedTimeByHour6, int usedTimeByHour7, int usedTimeByHour8, int usedTimeByHour9, int usedTimeByHour10, int usedTimeByHour11, int usedTimeByHour12, int usedTimeByHour13, int usedTimeByHour14, int usedTimeByHour15, int usedTimeByHour16, int usedTimeByHour17, int usedTimeByHour18, int usedTimeByHour19, int usedTimeByHour20, int usedTimeByHour21, int usedTimeByHour22, int usedTimeByHour23) {
+        public PlaceholderItem(String id, String content, String details, int usedTimeByHour0, int usedTimeByHour1, int usedTimeByHour2, int usedTimeByHour3, int usedTimeByHour4, int usedTimeByHour5, int usedTimeByHour6, int usedTimeByHour7, int usedTimeByHour8, int usedTimeByHour9, int usedTimeByHour10, int usedTimeByHour11, int usedTimeByHour12, int usedTimeByHour13, int usedTimeByHour14, int usedTimeByHour15, int usedTimeByHour16, int usedTimeByHour17, int usedTimeByHour18, int usedTimeByHour19, int usedTimeByHour20, int usedTimeByHour21, int usedTimeByHour22, int usedTimeByHour23,String pkgname,int category,String lastused) {
             this.id = id;
             this.content = content;
             this.details = details;
@@ -99,6 +102,9 @@ public class PlaceholderContent {
             this.usedTimeByHour[21] = usedTimeByHour21;
             this.usedTimeByHour[22] = usedTimeByHour22;
             this.usedTimeByHour[23] = usedTimeByHour23;
+            this.pkgname=pkgname;
+            this.category=category;
+            this.lastused=lastused;
         }
 
 

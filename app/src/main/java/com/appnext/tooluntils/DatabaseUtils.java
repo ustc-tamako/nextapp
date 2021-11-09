@@ -26,7 +26,7 @@ public class DatabaseUtils {
     }
 
     //    AppUsageInfoByAppName表格添加数据
-    public static final void addDataToAppUsageInfoByAppName(String appName, String pkgName, int allUsedTime, int allOpenTime, List<Integer> usedTimeByHour, byte[] icon,int category) {
+    public static final void addDataToAppUsageInfoByAppName(String appName, String pkgName, int allUsedTime, int allOpenTime, List<Integer> usedTimeByHour, byte[] icon,int category,String lastUsedTime) {
         AppUsageInfoByAppName appUsageInfoByAppName = new AppUsageInfoByAppName();
         appUsageInfoByAppName.setAppName(appName);
         appUsageInfoByAppName.setPkgName(pkgName);
@@ -58,6 +58,7 @@ public class DatabaseUtils {
         appUsageInfoByAppName.setUsedTimeByHour22(usedTimeByHour.get(22));
         appUsageInfoByAppName.setUsedTimeByHour23(usedTimeByHour.get(23));
         appUsageInfoByAppName.setName(new String(icon));
+        appUsageInfoByAppName.setLastUsedTime(lastUsedTime);
         appUsageInfoByAppName.setCategory(category);
         String str = "abcd";
         byte[] tmp = str.getBytes();

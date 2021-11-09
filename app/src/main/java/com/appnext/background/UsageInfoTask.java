@@ -9,13 +9,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.appnext.ItemDetailHostActivity;
+import com.appnext.ItemListFragment;
 import com.appnext.database.AppUsageInfo;
 import com.appnext.database.AppUsageInfoByAppName;
+import com.appnext.placeholder.PlaceholderContent;
 import com.appnext.tooluntils.DatabaseUtils;
 
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class UsageInfoTask extends AsyncTask<Context, Void, Void> {
@@ -73,12 +76,17 @@ public class UsageInfoTask extends AsyncTask<Context, Void, Void> {
             List<Integer> usedByHour = packageInfo.getmOpenTime();
             byte[] icon = packageInfo.getDrawable();
             int category = packageInfo.getCategory();
+            String lastUsedTime = packageInfo.getmEndTime();
             LitePal.deleteAll(AppUsageInfoByAppName.class,"appName = ?"
                             ,appName);
             if (allOpenTime != 0 || allOpenTime != 0) {
-                DatabaseUtils.addDataToAppUsageInfoByAppName(appName,pkgName,allUsedTime,allOpenTime,usedByHour,icon,category);
+                DatabaseUtils.addDataToAppUsageInfoByAppName(appName,pkgName,allUsedTime,allOpenTime,usedByHour,icon,category,lastUsedTime);
             }
         }
+
+
+
+
         return null;
 
     }
