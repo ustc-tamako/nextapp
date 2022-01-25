@@ -10,6 +10,8 @@
     android:layout_marginEnd="@dimen/container_horizontal_margin"
     android:orientation="vertical">
 
+
+
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -17,7 +19,10 @@
         android:layout_marginBottom="25dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_main_list_bg"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+       >
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/weekly_button"
@@ -37,7 +42,8 @@
             android:layout_marginRight="5dp"
             android:backgroundTint="@color/button_color_selector"
             android:text="Daily"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            />
 
     </LinearLayout>
 
@@ -55,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
-                android:text="Oct 1"
+                android:text="Nov 7"
                 android:textColor="#696969"
                 android:textSize="20dp" />
 
@@ -64,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginBottom="40dp"
-                android:text="4h 30m"
+                android:text="2h 42m"
                 android:textColor="@color/black"
                 android:textSize="35dp"
                 android:textStyle="bold" />

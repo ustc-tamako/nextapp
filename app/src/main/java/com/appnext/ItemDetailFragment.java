@@ -11,8 +11,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.appnext.tooluntils.ApknameMap;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.appnext.placeholder.PlaceholderContent;
 import com.appnext.databinding.FragmentItemDetailBinding;
@@ -35,9 +39,14 @@ import com.anychart.enums.TooltipDisplayMode;
 import com.anychart.graphics.vector.SolidFill;
 import com.anychart.graphics.vector.text.HAlign;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.anychart.core.cartesian.series.RangeColumn;
+import com.appnext.database.AppUsageInfo;
+
+import org.litepal.LitePal;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -59,7 +68,14 @@ public class ItemDetailFragment extends Fragment {
     private PlaceholderContent.PlaceholderItem mItem;
     private CollapsingToolbarLayout mToolbarLayout;
     private TextView mTextView;
-
+    private TextView mtimeView;
+    private ListView listView;
+    private TextView mavView;
+    private TextView mnotifiView;
+    private ImageView mView;
+    private TextView category;
+    private TextView lastuse;
+    public static final List<AppUsageInfo> appUsageInfo = LitePal.findAll(AppUsageInfo.class);
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
@@ -87,6 +103,7 @@ public class ItemDetailFragment extends Fragment {
             // to load content from a content provider.
             mItem = PlaceholderContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
+
     }
 
     @Override
@@ -95,12 +112,59 @@ public class ItemDetailFragment extends Fragment {
 
         binding = FragmentItemDetailBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
+        mnotifiView=binding.Notification;
+        mavView=binding.Daverage;
+        mView=binding.imagev;
+        int count=0;
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (AppUsageInfo usageInfo : appUsageInfo) {
+            if(usageInfo.getStartTime().substring(0,10).equals(sdf.format(d)))
+            {
+                if (usageInfo.getAppName().equals(mItem.content)){
+                    count++;
+                }
+            }
+
+        }
+        String[] useTimeByAppName=new String[count];
+        int index=0;
+        for (AppUsageInfo usageInfo : appUsageInfo) {
+
+            if(usageInfo.getStartTime().substring(0,10).equals(sdf.format(d)))
+            {
+                if(usageInfo.getAppName().equals(mItem.content)){
+                    String name=usageInfo.getUsedTime()/60+"m "+usageInfo.getUsedTime()%60+"s";
+                    name=String.format("%36s",name);
+                    String time=usageInfo.getStartTime().substring(11,16)+
+                            " - "+usageInfo.getEndTime().substring(11,16);
+                    time=String.format("%-15s",time);
+                    useTimeByAppName[index++]=time+name;
+
+                }
+            }
+
+        }
+        mnotifiView.setText(Integer.toString(count));
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.activity_listview, useTimeByAppName);
+
+        listView = binding.countryList;
+        listView.setAdapter(adapter);
+
 
 //        mToolbarLayout = rootView.findViewById(R.id.toolbar_layout);
-//        mTextView = binding.itemDetail;
+          mTextView = binding.appnameView;
+          mtimeView=binding.apptime;
+          mavView=binding.Daverage;
+          category=binding.category;
+          lastuse=binding.lastused;
+          category.setText(ApknameMap.CategoryMap[mItem.category+1]);
+          lastuse.setText(mItem.lastused);
+
 
         // Show the placeholder content as text in a TextView & in the toolbar if available.
-//        updateContent();
+        updateContent();
 //        rootView.setOnDragListener(dragListener);
         return rootView;
     }
@@ -119,7 +183,7 @@ public class ItemDetailFragment extends Fragment {
 
         List<DataEntry> data = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            data.add(new ValueDataEntry(String.format("%dh", i),2*i));
+            data.add(new ValueDataEntry(String.format("%dh", i),mItem.usedTimeByHour[i]/60));
         }
 
         Column column = cartesian.column(data);
@@ -238,7 +302,22 @@ public class ItemDetailFragment extends Fragment {
 
     private void updateContent() {
         if (mItem != null) {
-            mTextView.setText(mItem.details);
+            mTextView.setText(mItem.content);
+            mView.setImageBitmap(WidgetService.WidgetReceiver.drawableToBitmap(WidgetService.WidgetReceiver.getIconFromPackageName(mItem.pkgname, getActivity())));
+            int time=Integer.parseInt(mItem.details.substring(0,mItem.details.length()-5));
+            if(time>60)
+            {
+                if(time%60==0)
+                {
+                    mtimeView.setText(time/60+"h");
+                }
+                mtimeView.setText(time/60+"h "+time%60+"m");
+            }
+            else
+            {
+                mtimeView.setText(time+"m");
+            }
+            mavView.setText(time/24+"m");
             if (mToolbarLayout != null) {
                 mToolbarLayout.setTitle(mItem.content);
             }

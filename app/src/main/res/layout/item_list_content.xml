@@ -14,8 +14,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
 
-        android:background="@color/black"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        android:background="@android:color/transparent" />
 
     <TextView
         android:id="@+id/app_text"
@@ -23,9 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/icon_img"
-        android:layout_marginLeft="20dp"
 
         android:text="APP"
         android:textAppearance="?attr/textAppearanceListItem" />
